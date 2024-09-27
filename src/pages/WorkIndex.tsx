@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { penguinApi } from "../util/axios";
 import Work from "../types/Work";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import SpringDataRestResponse from "../types/SpringDataRestResponse";
+import { Link } from "react-router-dom"
 
 export default function WorkIndex({ }) {
   const [works, setWorks] = useState<Work[]>([]);
@@ -39,6 +40,8 @@ export default function WorkIndex({ }) {
     <Typography variant="h1" component="div">
       Works (POC of Spring Rest repository feature):
     </Typography>
+
+    <Button component={Link} to={"/"}>Back</Button>
 
     <p>You have added {counter} works</p>
 

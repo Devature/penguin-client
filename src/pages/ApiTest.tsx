@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { penguinApi } from "../util/axios";
 import { Button, Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom"
 
 export default function ApiTest() {
   const [msg, setMsg] = useState("");
@@ -37,6 +38,7 @@ export default function ApiTest() {
           {loading ? "Loading..." : "Test API"}
         </Button>
         <Button onClick={() => setMsg("")}>Clear test message</Button>
+        <Button component={Link} to={"/"}>Back</Button>
       </Stack>
       <Typography
         sx={{
