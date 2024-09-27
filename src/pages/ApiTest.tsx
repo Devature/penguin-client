@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { penguinApi } from "./util/axios";
+import { penguinApi } from "../util/axios";
 import { Button, Stack, Typography } from "@mui/material";
 
 export default function ApiTest() {
@@ -10,7 +10,7 @@ export default function ApiTest() {
     if (loading) return;
     setLoading(true);
     try {
-      const res = await penguinApi.get("/");
+      const res = await penguinApi.get("/api/test");
       setMsg(res.data.message);
     } catch (err) {
       console.error(err);

@@ -1,6 +1,19 @@
-import ApiTest from "./ApiTest";
+import {
+  createBrowserRouter,
+  RouterProvider
+} from "react-router-dom";
+
+import ApiTest from "./pages/ApiTest";
 import { Box, ThemeProvider } from "@mui/material";
 import { theme } from "./util/theme";
+import WorkIndex from "./pages/WorkIndex";
+import Index from "./pages/Index";
+
+const router = createBrowserRouter([
+  { path: "/", element: <Index /> },
+  { path: "/test", element: <ApiTest />, },
+  { path: "/works", element: <WorkIndex /> }
+]);
 
 function App() {
   return (
@@ -14,7 +27,7 @@ function App() {
             minHeight: "100vh",
           }}
         >
-          <ApiTest />
+          <RouterProvider router={router} />
         </Box>
       </ThemeProvider>
     </>
