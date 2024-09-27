@@ -1,6 +1,6 @@
-interface SpringDataRestResponse<T> {
+interface SpringDataRestResponse<T, K extends string> {
   _embedded: {
-    works: T[];
+    [key in K]: T[];
   };
   _links: {
     self: {

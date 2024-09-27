@@ -26,8 +26,8 @@ export default function WorkIndex({ }) {
   }
 
   useEffect(() => {
-    penguinApi.get<SpringDataRestResponse<Work>>("/works")
-    .then(res => setWorks(res.data._embedded.works))
+    penguinApi.get<SpringDataRestResponse<Work, "works">>("/works")
+    .then(res => setWorks(res.data._embedded["works"]))
     .catch(err => console.log(err));
   }, [counter]);
 
@@ -39,6 +39,8 @@ export default function WorkIndex({ }) {
     <Typography variant="h1" component="div">
       Works (POC of Spring Rest repository feature):
     </Typography>
+
+    <p>You have added {counter} works</p>
 
     <ol>
       {workListItems}
