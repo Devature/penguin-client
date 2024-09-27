@@ -27,7 +27,7 @@ export default function WorkIndex({ }) {
 
   useEffect(() => {
     penguinApi.get<SpringDataRestResponse<Work, "works">>("/works")
-    .then(res => setWorks(res.data._embedded["works"]))
+    .then(res => setWorks(res.data._embedded.works))
     .catch(err => console.log(err));
   }, [counter]);
 
