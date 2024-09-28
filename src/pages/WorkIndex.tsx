@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { penguinApi } from '../util/axios';
-import Work from '../types/Work';
+import Work from '../util/types/Work';
 import { Typography } from '@mui/material';
-import SpringDataRestResponse from '../types/SpringDataRestResponse';
+import SpringDataRestResponse from '../util/types/SpringDataRestResponse';
 
 export default function WorkIndex() {
     const [works, setWorks] = useState<Work[]>([]);

@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 export default function Index() {
     return (
         <>
-            <Typography variant="h1" component="div">
-                Welcome to Penguin Tickets...
+            <Typography variant="h4" component="div">
+                Welcome to Ticket Penguin!
             </Typography>
-
             <Button component={Link} to={'/test'}>
                 Test API
             </Button>
