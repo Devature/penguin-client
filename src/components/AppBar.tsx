@@ -23,7 +23,7 @@ function ResponsiveAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
         null
     );
-    const { isAuthenticated, setIsAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -184,7 +184,7 @@ function ResponsiveAppBar() {
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        setIsAuthenticated(false);
+                                        // TODO: Logout user
                                         handleCloseUserMenu();
                                     }}
                                 >
@@ -196,7 +196,9 @@ function ResponsiveAppBar() {
                         </Box>
                     ) : (
                         // If user is not authenticated, show login button
-                        <Button onClick={() => setIsAuthenticated(true)}>
+                        <Button onClick={() => {
+                            // TODO: Redirect to login page
+                        }}>
                             Login
                         </Button>
                     )}
