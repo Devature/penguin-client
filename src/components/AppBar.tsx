@@ -13,7 +13,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
-import { Link } from 'react-router-dom';
 
 const pages = ['Projects', 'Tickets'];
 
@@ -200,7 +199,11 @@ function ResponsiveAppBar() {
                         /*<Button onClick={() => setIsAuthenticated(true)}>
                             Login
                         </Button>*/
-                        <Button component={Link} to={'/login'}>
+                        <Button
+                            onClick={() => {
+                                document.location.href = '/login';
+                            }}
+                        >
                             Login
                         </Button>
                     )}

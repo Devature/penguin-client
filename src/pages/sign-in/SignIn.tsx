@@ -194,7 +194,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               Don&apos;t have an account?{' '}
               <span>
                 <Link
-                  component={RouterLink}
                   href="/material-ui/getting-started/templates/sign-in/"
                   variant="body2"
                   sx={{ alignSelf: 'center' }}

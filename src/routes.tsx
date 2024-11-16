@@ -8,5 +8,5 @@ export const router = createBrowserRouter([
     { path: '/', element: <Index /> },
     { path: '/test', element: <ApiTest /> },
     { path: '/works', element: <WorkIndex /> },
-    // { path: '/login', element: <SignIn /> }
+    { path: '/login', element: <SignIn /> }
 ]);
