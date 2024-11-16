@@ -27,6 +27,7 @@ export default tseslint.config(
             ],
             'unused-imports/no-unused-imports': 'warn',
             '@typescript-eslint/no-unused-vars': 'warn',
+            '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true }],
         },
     }
 );
