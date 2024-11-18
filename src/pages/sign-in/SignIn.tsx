@@ -14,7 +14,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
+import { GoogleIcon, FacebookIcon } from './CustomIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 
@@ -86,7 +86,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    const emailRegex = /\S+@\S+\.\S+/;
+
+    if (!email.value || !emailRegex.test(email.value)) {
       setEmailError(true);
       setEmailErrorMessage('Please enter a valid email address.');
       isValid = false;
@@ -95,9 +97,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~`!@#$%^&*()\-_+={}\[\]|;:<>,./?]).{8,}$/;
+
+    if (!password.value || !passwordRegex.test(password.value) ) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
       isValid = false;
     } else {
       setPasswordError(false);
@@ -113,7 +117,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       <SignInContainer direction="column" justifyContent="space-between">
         <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
-          <SitemarkIcon />
           <Typography
             component="h1"
             variant="h4"
