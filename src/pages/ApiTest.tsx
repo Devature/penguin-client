@@ -10,8 +10,8 @@ export default function ApiTest() {
         if (loading) return;
         setLoading(true);
         try {
-            const res = await penguinApi.get('/api/test');
-            setMsg(res.data.message);
+            const res = await penguinApi.get('/api/v1/test');
+            setMsg(res.data);
         } catch (err) {
             console.error(err);
             setMsg(
