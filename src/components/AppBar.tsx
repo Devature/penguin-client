@@ -17,6 +17,7 @@ import { useAuth } from '../util/auth/useAuth';
 const pages = ['Projects', 'Tickets'];
 
 function ResponsiveAppBar() {
+
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null
     );

@@ -20,7 +20,7 @@ function App() {
                     >
                         <ResponsiveAppBar />
                         <Box>
-                            <RouterProvider router={router} />
+                            <RouterProvider router={router}/>
                         </Box>
                     </Stack>
                 </ThemeProvider>
