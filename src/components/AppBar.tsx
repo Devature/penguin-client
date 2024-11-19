@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
 
-const pages = ['Projects', 'Tickets'];
+const pages = ['Projects', 'Tickets',];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
