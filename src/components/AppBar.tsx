@@ -197,9 +197,9 @@ function ResponsiveAppBar() {
                     ) : (
                         // If user is not authenticated, show login button
                         <Button onClick={() => setIsAuthenticated(true)}>
-                            Login
+                             Hello World
                         </Button>
-                    )}
+                        )}
                 </Toolbar>
             </Container>
         </AppBar>
