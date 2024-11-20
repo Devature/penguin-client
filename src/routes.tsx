@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
             { path: '/', element: <Index /> },
             { path: '/test', element: <ApiTest /> },
             { path: '/works', element: <WorkIndex /> },
-          {/*  { path: '/register', element: <SignUp /> }, */}
+            { path: '/register', element: <SignUp /> },
         ],
     },
 ]);

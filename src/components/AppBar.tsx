@@ -211,7 +211,7 @@ function ResponsiveAppBar() {
                              Login
                         </Button>
 
-                        <Button>
+                        <Button onClick={() => navigate('register')}>
                             Register
                         </Button>
 
