@@ -3,29 +3,31 @@ name: Sync Main to Release
 on:
   push:
     branches:
-      - main  # Trigger when changes are pushed to main
+      - main
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
 
-    - name: Configure Git
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
+      - name: Configure Git
+        run: |
+          git config user.name "Devature Actions"
+          git config user.email "bot@devature.dev"
 
-    - name: Checkout Release Branch
-      run: |
-        git fetch origin release
-        git checkout release
+      - name: Checkout Release Branch
+        run: |
+          git fetch origin release
+          git checkout release
 
-    - name: Merge Main into Release
-      run: |
-        git merge main --no-edit
+      - name: Merge Main into Release
+        run: |
+          git merge main --allow-unrelated-histories --no-edit
 
-    - name: Push to Release Branch
-      run: |
-        git push origin release
+      - name: Push to Release Branch
+        run: |
+          git push origin release
