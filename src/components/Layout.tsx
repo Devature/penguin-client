@@ -1,4 +1,3 @@
-// components/Layout.tsx
 import { Stack, Box } from '@mui/material';
 import ResponsiveAppBar from './AppBar';
 import { Outlet } from 'react-router-dom';
@@ -7,7 +6,12 @@ import { Outlet } from 'react-router-dom';
 const Layout = () => (
     <Stack
         sx={{
-            bgcolor: 'background.default', // Apply the background styling here
+            // Apply the background styling here
+            // sx is a prop that's part of MUI that allows inline CSS styles to apply
+            // to MUI components using JS syntax
+            // tl;dr sx = shorthand for style definition in MUI components
+            // prop takes JS object, keys are CSS properties and values are the corresponding values
+            bgcolor: 'background.default',
             m: 0,
             minWidth: '100vw',
             minHeight: '100vh',

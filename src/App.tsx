@@ -9,8 +9,8 @@ function App() {
     return (
         <AuthProvider>
             <ThemeProvider theme={theme}>
-            //uses the router from routes.tsx
-            //this gets styled using the Layout.tsx sheet
+            {/*uses the router from routes.tsx
+              this gets styled using the Layout.tsx sheet */}
                 <RouterProvider router={router} />
             </ThemeProvider>
         </AuthProvider>
