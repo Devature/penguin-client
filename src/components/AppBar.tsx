@@ -49,8 +49,7 @@ function ResponsiveAppBar() {
 
     const loginHandler = () =>{
             //handler for the login button
-            console.log('Navigating to /login');
-            navigate('/login');
+            navigate('/signin');
         };
 
 
