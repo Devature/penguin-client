@@ -13,8 +13,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
+import { Link } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const pages = ['Projects', 'Tickets',];
+
+
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -24,6 +28,8 @@ function ResponsiveAppBar() {
         null
     );
     const { isAuthenticated, setIsAuthenticated } = useAuth();
+
+    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -39,6 +45,8 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+
 
     return (
         <AppBar position="static">
@@ -195,10 +203,21 @@ function ResponsiveAppBar() {
                             </Menu>
                         </Box>
                     ) : (
-                        // If user is not authenticated, show login button
+                        <Stack
+                                                spacing={2}
+                                                direction="row">
+
                         <Button onClick={() => setIsAuthenticated(true)}>
-                             Hello World
+                             Login
                         </Button>
+
+                        <Button onClick={() => navigate('/register')}>
+                            Register
+                        </Button>
+
+
+
+                        </Stack>
                         )}
                 </Toolbar>
             </Container>
