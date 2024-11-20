@@ -5,6 +5,7 @@ import ApiTest from './pages/ApiTest';
 import WorkIndex from './pages/WorkIndex';
 import SignIn from './pages/SignIn';
 import Layout from './components/Layout';  // Import the Layout component
+import SignUp from './pages/SignUp';
 
 //this gets used by app.tsx
 export const router = createBrowserRouter([
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
             { path: '/test', element: <ApiTest /> },
             { path: '/works', element: <WorkIndex /> },
             { path: '/signin', element: <SignIn /> },
+            { path: '/signup', element: <SignUp /> },
         ],
     },
 ]);
