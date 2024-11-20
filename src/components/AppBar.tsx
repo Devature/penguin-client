@@ -47,6 +47,11 @@ function ResponsiveAppBar() {
     };
 
 
+    const loginHandler = () =>{
+            //handler for the login button
+            navigate('/register')
+        };
+
 
     return (
         <AppBar position="static">
@@ -242,6 +247,8 @@ function ResponsiveAppBar() {
                                 justifyContent: 'flex-end',
                             }}>
                             <Button onClick={() => setIsAuthenticated(true)}>Login</Button>
+
+
                             <Button>Register</Button>
                         </Stack>
                     )}
