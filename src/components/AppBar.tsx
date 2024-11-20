@@ -49,7 +49,8 @@ function ResponsiveAppBar() {
 
     const loginHandler = () =>{
             //handler for the login button
-            navigate('/register')
+            console.log('Navigating to /login');
+            navigate('/login');
         };
 
 
@@ -246,7 +247,7 @@ function ResponsiveAppBar() {
                                 ml: 2,
                                 justifyContent: 'flex-end',
                             }}>
-                            <Button onClick={() => setIsAuthenticated(true)}>Login</Button>
+                            <Button onClick={loginHandler}>Login</Button>
 
 
                             <Button>Register</Button>

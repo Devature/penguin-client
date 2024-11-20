@@ -1,1 +1,0 @@
-// TODO: https://github.com/mui/material-ui/tree/v6.1.1/docs/data/material/getting-started/templates/sign-up
