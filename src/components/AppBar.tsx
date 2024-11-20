@@ -52,6 +52,11 @@ function ResponsiveAppBar() {
             navigate('/signin');
         };
 
+        const registerHandler = () =>{
+            //handler for the login button
+            navigate('/signup');
+        };
+
 
     return (
         <AppBar position="static">
@@ -249,7 +254,7 @@ function ResponsiveAppBar() {
                             <Button onClick={loginHandler}>Login</Button>
 
 
-                            <Button>Register</Button>
+                            <Button onClick={registerHandler}>Register</Button>
                         </Stack>
                     )}
 
