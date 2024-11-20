@@ -71,6 +71,7 @@ function ResponsiveAppBar() {
                         Ticket Penguin
                     </Typography>
 
+
                     <Box
                         sx={{
                             flexGrow: 1,
@@ -135,6 +136,9 @@ function ResponsiveAppBar() {
                     >
                         Ticket Penguin
                     </Typography>
+
+                    {/* OLD CODE FOR ALWAYS PRESENT NAV BAR BUTTONS -- MOVING THIS TO AUTH USERS ONLY*/}
+                    {/*}
                     <Stack
                         spacing={2}
                         direction="row"
@@ -154,71 +158,94 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Stack>
+                    */}
                     {/* Right side login button/user menu */}
                     {isAuthenticated ? (
-                        // If user is authenticated, show user menu
-                        <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
-                                <IconButton
-                                    onClick={handleOpenUserMenu}
-                                    sx={{ p: 0 }}
-                                >
-                                    <Avatar
-                                        alt="User Icon"
-                                        src="/static/images/avatar/2.jpg"
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
+                        <>
+                            {/* Stack with buttons only visible when authenticated */}
+                            <Stack
+                                spacing={2}
+                                direction="row"
+                                sx={{
+                                    flexGrow: 1,
+                                    display: { xs: 'none', md: 'flex' },
+                                    ml: 2,
+                                    justifyContent: 'flex-end',
+                                    mr: 2,
                                 }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
                             >
-                                <MenuItem onClick={handleCloseUserMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>
-                                        Dashboard
-                                    </Typography>
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        setIsAuthenticated(false);
-                                        handleCloseUserMenu();
+                                {pages.map((page) => (
+                                    <Button
+                                        key={page}
+                                        onClick={handleCloseNavMenu}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        {page}
+                                    </Button>
+                                ))}
+                            </Stack>
+
+                            {/* Right side user menu */}
+                            <Box sx={{ flexGrow: 0 }}>
+                                <Tooltip title="Open settings">
+                                    <IconButton
+                                        onClick={handleOpenUserMenu}
+                                        sx={{ p: 0 }}
+                                    >
+                                        <Avatar
+                                            alt="User Icon"
+                                            src="/static/images/avatar/2.jpg"
+                                        />
+                                    </IconButton>
+                                </Tooltip>
+                                <Menu
+                                    sx={{ mt: '45px' }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
                                     }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
                                 >
-                                    <Typography sx={{ textAlign: 'center' }}>
-                                        Logout
-                                    </Typography>
-                                </MenuItem>
-                            </Menu>
-                        </Box>
+                                    <MenuItem onClick={handleCloseUserMenu}>
+                                        <Typography sx={{ textAlign: 'center' }}>
+                                            Dashboard
+                                        </Typography>
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => {
+                                            setIsAuthenticated(false);
+                                            handleCloseUserMenu();
+                                        }}
+                                    >
+                                        <Typography sx={{ textAlign: 'center' }}>
+                                            Logout
+                                        </Typography>
+                                    </MenuItem>
+                                </Menu>
+                            </Box>
+                        </>
                     ) : (
-                        <Stack
-                                                spacing={2}
-                                                direction="row">
-
-                        <Button onClick={() => setIsAuthenticated(true)}>
-                             Login
-                        </Button>
-
-                        <Button>
-                            Register
-                        </Button>
-
-
-
+                        // This makes the login and register buttons appear when the user is not authenticated
+                        <Stack spacing={2} direction="row"
+                            sx={{
+                                flexGrow: 1,
+                                display: { xs: 'none', md: 'flex' },
+                                ml: 2,
+                                justifyContent: 'flex-end',
+                            }}>
+                            <Button onClick={() => setIsAuthenticated(true)}>Login</Button>
+                            <Button>Register</Button>
                         </Stack>
-                        )}
+                    )}
+
                 </Toolbar>
             </Container>
         </AppBar>
