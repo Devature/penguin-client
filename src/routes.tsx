@@ -3,7 +3,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import Index from './pages/Index';
 import ApiTest from './pages/ApiTest';
 import WorkIndex from './pages/WorkIndex';
-import SignUp from './pages/SignUp';
 import Layout from './components/Layout';  // Import the Layout component
 
 //this gets used by app.tsx
@@ -20,7 +19,6 @@ export const router = createBrowserRouter([
             { path: '/', element: <Index /> },
             { path: '/test', element: <ApiTest /> },
             { path: '/works', element: <WorkIndex /> },
-          {/*  { path: '/register', element: <SignUp /> }, */}
         ],
     },
 ]);
