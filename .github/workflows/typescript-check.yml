@@ -1,0 +1,44 @@
+name: TypeScript PR Check
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  type-check:
+    name: Type Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: TypeScript Check
+        run: |
+          echo "Running type check..."
+          npm run type-check || (
+            echo "TypeScript check failed! 🚨"
+            echo "Please fix the following errors:"
+            npm run type-check
+            exit 1
+          )
+          
+      - name: Build Check
+        run: |
+          echo "Running build check..."
+          npm run build || (
+            echo "Build failed! 🚨"
+            echo "Please fix the build errors above"
+            exit 1
+          )
