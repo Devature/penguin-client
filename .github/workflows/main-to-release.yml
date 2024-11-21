@@ -18,7 +18,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.BOT_PAT }}
+          repository: Devature/penguin-client
+          token: ${{ secrets.GITHUB_TOKEN }}  # Using default GitHub token
+          ssh-strict: true
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Add SSH key for authentication
+          ssh-user: git
+          persist-credentials: true
+          clean: true
+          sparse-checkout-cone-mode: true
+          fetch-tags: false
+          show-progress: true
+          lfs: false
+          submodules: false
+          set-safe-directory: true
           
       - name: Configure Bot Git User
         run: |
@@ -40,7 +52,7 @@ jobs:
           # Reset release branch to match main
           git reset --hard origin/main
           
-          # Force push to release branch using bot's token
+          # Force push to release branch
           git push --force origin release
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
