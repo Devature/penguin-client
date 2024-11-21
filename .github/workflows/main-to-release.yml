@@ -17,31 +17,27 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.ADMIN_PAT }}
-          
-      - name: Debug Permissions
-        run: |
-          echo "Current user:"
-          git config --get user.name || echo "user.name not set"
-          git config --get user.email || echo "user.email not set"
-          echo "Remote URL:"
-          git remote -v
-          echo "Current branch:"
-          git branch --show-current
           
       - name: Update Release Branch
         env:
-          GITHUB_TOKEN: ${{ secrets.ADMIN_PAT }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_PAT }}
         run: |
-          # Explicitly set git config
-          git config --global user.name "devature-actions[bot]"
-          git config --global user.email "devature-actions[bot]@users.noreply.github.com"
+          # Configure git
+          git config --global user.name "Devature Bot"
+          git config --global user.email "bot@devature.dev"
           
-          # Print git config for verification
-          echo "Git config after update:"
-          git config --list
+          # Remove and re-add origin with token
+          git remote remove origin
+          git remote add origin "https://x-access-token:${ADMIN_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           
-          # Get and verify target commit
+          # Verify remote
+          echo "Remote URL (token masked):"
+          git remote -v | sed 's/x-access-token:[^@]*@/***@/'
+          
+          # Fetch all branches
+          git fetch origin
+          
+          # Get target commit
           TARGET_COMMIT="${{ github.event.inputs.target_commit }}"
           if [ "$TARGET_COMMIT" = "main" ]; then
             echo "Using main branch HEAD"
@@ -49,19 +45,10 @@ jobs:
           fi
           echo "Target commit: $TARGET_COMMIT"
           
-          # Verify the commit exists
-          if ! git cat-file -e $TARGET_COMMIT^{commit}; then
-            echo "Error: Invalid commit hash"
-            exit 1
-          fi
-          
           # Create/update release branch
           echo "Creating/updating release branch..."
           git checkout -B release $TARGET_COMMIT
           
-          # Force push with lease for safety
-          echo "Pushing to release branch..."
-          git push --force-with-lease origin release || {
-            echo "Force with lease failed, attempting direct force push..."
-            git push -f origin release
-          }
+          # Force push
+          echo "Force pushing to release branch..."
+          git push -f origin release
