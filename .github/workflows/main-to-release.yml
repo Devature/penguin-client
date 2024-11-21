@@ -17,12 +17,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           repository: Devature/penguin-client
-          token: ${{ secrets.GITHUB_TOKEN }}  # Using default GitHub token
-          ssh-strict: true
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Add SSH key for authentication
-          ssh-user: git
+          token: ${{ secrets.REPO_PAT }}
+          fetch-depth: 0
           persist-credentials: true
           clean: true
           sparse-checkout-cone-mode: true
@@ -32,27 +29,24 @@ jobs:
           submodules: false
           set-safe-directory: true
           
-      - name: Configure Bot Git User
+      - name: Configure Git
         run: |
           git config --global user.name "Devature Actions"
           git config --global user.email "bot@devature.dev"
           
       - name: Update Release Branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
         run: |
-          # Fetch latest changes from remote
+          git remote set-url origin https://${GITHUB_TOKEN}@github.com/Devature/penguin-client.git
+          
           git fetch origin
           
-          # Check if release branch exists, create if it doesn't
           if ! git show-ref --quiet refs/remotes/origin/release; then
             git checkout -b release
           else
             git checkout release
           fi
           
-          # Reset release branch to match main
           git reset --hard origin/main
           
-          # Force push to release branch
-          git push --force origin release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
