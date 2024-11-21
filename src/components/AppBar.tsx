@@ -13,8 +13,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
-import { Link } from 'react-router-dom';
-import {useNavigate} from 'react-router-dom';
 
 const pages = ['Projects', 'Tickets',];
 
