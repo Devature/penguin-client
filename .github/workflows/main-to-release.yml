@@ -9,29 +9,25 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Debug Token and Permissions
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+      - name: Configure Safe Directory
         run: |
-          echo "Token length: ${#BOT_TOKEN}"
+          git config --global --add safe.directory '*'
           
-          curl -s -H "Authorization: token $BOT_TOKEN" \
-               -H "Accept: application/vnd.github.v3+json" \
-               https://api.github.com/user \
-               | jq -r '.login, .permissions'
-      
-      - name: Checkout with Debug
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.BOT_TOKEN }}
-          
-      - name: Test Repository Access
+      - name: Clone and Setup
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
-          echo "Testing access to $REPO"
-          curl -s -H "Authorization: token $BOT_TOKEN" \
-               -H "Accept: application/vnd.github.v3+json" \
-               "https://api.github.com/repos/$REPO" \
-               | jq -r '.permissions'
+          git clone "https://$BOT_TOKEN@github.com/$REPO.git" .
+          
+          git config user.name "Devature Actions"
+          git config user.email "bot@devature.dev"
+          
+          git fetch --all
+          git fetch origin main:main
+          
+          git checkout release 2>/dev/null || git checkout -b release
+          
+          git reset --hard origin/main
+          
+          git push -f "https://$BOT_TOKEN@github.com/$REPO.git" release
