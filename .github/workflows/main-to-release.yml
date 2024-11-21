@@ -1,33 +1,60 @@
-name: Sync Main to Release
+name: Update Release Branch
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      target_commit:
+        description: 'Commit hash to set release branch to (defaults to main)'
+        required: false
+        default: 'main'
 
 jobs:
-  sync:
+  update_release:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Configure Safe Directory
-        run: |
-          git config --global --add safe.directory '*'
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch all history and tags
+          fetch-depth: 0
+
+          # Use the default GITHUB_TOKEN initially just to clone
+          token: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Clone and Setup
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          REPO: ${{ github.repository }}
+      - name: Configure Git
         run: |
-          git clone "https://$BOT_TOKEN@github.com/$REPO.git" .
-          
           git config user.name "Devature Actions"
           git config user.email "bot@devature.dev"
           
-          git fetch --all
-          git fetch origin main:main
+      - name: Update Release Branch
+        env:
+          # Use admin token from separate account
+          ADMIN_TOKEN: ${{ secrets.ADMIN_PAT }}
+        run: |
+          # Remove existing origin
+          git remote remove origin
           
-          git checkout release 2>/dev/null || git checkout -b release
+          # Add new origin with admin token
+          git remote add origin "https://x-access-token:${ADMIN_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           
-          git reset --hard origin/main
+          # Fetch all branches
+          git fetch origin
           
-          git push -f "https://$BOT_TOKEN@github.com/$REPO.git" release
+          # Get target commit (either input or main)
+          TARGET_COMMIT="${{ github.event.inputs.target_commit }}"
+          if [ "$TARGET_COMMIT" = "main" ]; then
+            TARGET_COMMIT=$(git rev-parse origin/main)
+          fi
+          
+          # Check if target commit exists
+          if ! git rev-parse --quiet --verify "${TARGET_COMMIT}^{commit}" > /dev/null; then
+            echo "Error: Invalid commit hash or reference"
+            exit 1
+          fi
+          
+          # Create or update release branch
+          git checkout -B release $TARGET_COMMIT
+          
+          # Force push to release branch
+          git push -f origin release
