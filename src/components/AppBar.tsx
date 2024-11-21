@@ -27,7 +27,6 @@ function ResponsiveAppBar() {
     );
     const { isAuthenticated, setIsAuthenticated } = useAuth();
 
-    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
