@@ -12,22 +12,28 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
+          fetch-depth: 0
           token: ${{ secrets.BOT_TOKEN }}
-
+          
       - name: Configure Git
         run: |
           git config user.name "Devature Actions"
           git config user.email "bot@devature.dev"
-
-      - name: Checkout Release Branch
+          
+      - name: Sync Branches
         run: |
-          git fetch origin release
-          git checkout release
-
-      - name: Merge Main into Release
-        run: |
-          git merge main --allow-unrelated-histories --no-edit
-
-      - name: Push to Release Branch
-        run: |
-          git push origin release
+          git fetch origin
+          
+          if git show-ref --quiet refs/remotes/origin/release; then
+            git checkout release
+            git pull origin release
+            
+            if ! git merge main --allow-unrelated-histories --no-edit; then
+              git merge --abort
+              git reset --hard origin/main
+            fi
+          else
+            git checkout -b release
+          fi
+          
+          git push -f origin release
