@@ -35,22 +35,20 @@ jobs:
           git config --global user.email "bot@devature.dev"
           
       - name: Update Release Branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
         run: |
-          # Fetch latest changes
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Devature/penguin-client.git
+
           git fetch origin
           
-          # Check if release branch exists, create if it doesn't
           if ! git show-ref --quiet refs/remotes/origin/release; then
             git checkout -b release
           else
             git checkout release
           fi
           
-          # Reset release branch to match main
           git reset --hard origin/main
           
-          # Force push to release branch
           git push --force origin release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
