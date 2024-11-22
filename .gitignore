@@ -109,3 +109,9 @@ dist
 
 #intellij idea files
 .idea/
+<<<<<<< Updated upstream
+=======
+
+#intellij idea files
+.idea/
+>>>>>>> Stashed changes
