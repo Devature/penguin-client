@@ -70,22 +70,8 @@ function ResponsiveAppBar() {
                         <SvgPenguinIconWhiteWithTextTall height="10vh"/>
                     </Box>
 
-                    {/* OLD TICKET PENGUIN TEXT -- TODO: REMOVE ONCE RUNNING THE NEW VERSION PAST THE TEAM
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        Ticket Penguin
-                    </Typography>
-                    */}
+
+
 
 
                     <Box
@@ -135,52 +121,9 @@ function ResponsiveAppBar() {
 
 
 
-                    {/* OLD CODE -- DEPRECATED?? */}
-                    {/* Small display */}
-                    {/*
-                    <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}>
-                        {/* <PenguinIcon /> */}
-                    {/*
-                    </Box>
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        Ticket Penguin
-                    </Typography>
-                    */}
 
-                    {/* OLD CODE FOR ALWAYS PRESENT NAV BAR BUTTONS -- MOVING THIS TO AUTH USERS ONLY*/}
-                    {/*}
-                    <Stack
-                        spacing={2}
-                        direction="row"
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: 'none', md: 'flex' },
-                            ml: 2,
-                        }}
-                    >
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
-                    </Stack>
-                    */}
+
+
                     {/* Right side login button/user menu */}
                     {isAuthenticated ? (
                         <>
@@ -264,6 +207,7 @@ function ResponsiveAppBar() {
                                 justifyContent: 'flex-end',
                             }}>
 
+                        {/* button wired to navigate to the sign in page -- this is hooked into a path in routes.tsx */}
                         <Button onClick={() => navigate('/signin')}>
                              Login
                         </Button>
