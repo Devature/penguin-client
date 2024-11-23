@@ -73,9 +73,8 @@ function ResponsiveAppBar() {
                         <Typography
                             variant="h1"
                             sx={{
-                                fontFamily: 'Gabriola',
+                                fontFamily: 'Gabriela',
                                 fontSize: '3rem',
-                                mt: '0.4rem',
                                 ml: '0.5rem',
                             }}
                         >
@@ -115,7 +114,6 @@ function ResponsiveAppBar() {
                                 sx={{
                                     fontFamily: 'Gabriola',
                                     fontSize: '2.4rem',
-                                    mt: '0.4rem',
                                 }}
                             >
                                 Ticket Penguin
