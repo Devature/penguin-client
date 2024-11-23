@@ -21,12 +21,8 @@ export const router = createBrowserRouter([
             { path: '/', element: <Index /> },
             { path: '/test', element: <ApiTest /> },
             { path: '/works', element: <WorkIndex /> },
-<<<<<<< Updated upstream
             { path: '/signin', element: <SignIn /> },
-            { path: '/signup', element: <SignUp /> },
-=======
             { path: '/register', element: <SignUp /> },
->>>>>>> Stashed changes
         ],
     },
 ]);

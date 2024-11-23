@@ -243,7 +243,6 @@ function ResponsiveAppBar() {
                             </Box>
                         </>
                     ) : (
-<<<<<<< Updated upstream
                         // This makes the login and register buttons appear when the user is not authenticated
                         <Stack spacing={2} direction="row"
                             sx={{
@@ -252,27 +251,17 @@ function ResponsiveAppBar() {
                                 ml: 2,
                                 justifyContent: 'flex-end',
                             }}>
-                            <Button onClick={loginHandler}>Login</Button>
-=======
-                        <Stack
-                                                spacing={2}
-                                                direction="row">
 
-                        <Button onClick={() => navigate('/register')}>
+                        <Button onClick={() => navigate('/signin')}>
                              Login
                         </Button>
 
-                        <Button>
+                        <Button onClick={() => navigate('register')}>
                             Register
                         </Button>
 
->>>>>>> Stashed changes
-
-
-                            <Button onClick={registerHandler}>Register</Button>
                         </Stack>
                     )}
-
                 </Toolbar>
             </Container>
         </AppBar>
