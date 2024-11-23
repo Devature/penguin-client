@@ -15,7 +15,7 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../assets/CustomIcons';
-import SvgPenguinAiPhoto from '../assets/penguin';
+import SvgPenguinPhotoBlack from '../assets/penguin-black';
 import AppTheme from '../assets/template-themes/AppTheme';
 import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
 
@@ -122,7 +122,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         <Card variant="outlined">
           {/* <SitemarkIcon /> */}
           <Box sx = {{display: 'flex', justifyContent: 'flex-start', width:'100%', height: '7.5vh', marginLeft: '-15px'}}>
-            <SvgPenguinAiPhoto  width = "20vh" margin="0"/>
+            <SvgPenguinPhotoBlack  width = "20vh" margin="0"/>
           </Box>
 
           <Typography
