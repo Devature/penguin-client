@@ -17,7 +17,8 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon } from './CustomIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
-import { emailRegex, passwordRegex } from '../../util/validationRegex.ts'
+import axios from 'axios';
+import { emailRegex, passwordRegex } from '../../util/validationRegex.ts';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -75,37 +76,49 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
+      const email = document.getElementById('email') as HTMLInputElement;
+      const password = document.getElementById('password') as HTMLInputElement;
 
-    let isValid = true;
+      let isValid;
 
-    if (!email.value || !emailRegex.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
-    }
+      if (!email.value || !emailRegex.test(email.value)) {
+        setEmailError(true);
+        setEmailErrorMessage('Please enter a valid email address.');
+        isValid = false;
+      } else {
+        setEmailError(false);
+        setEmailErrorMessage('');
+      }
 
-    if (!password.value || !passwordRegex.test(password.value) ) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
-    }
+      if (!password.value || !passwordRegex.test(password.value) ) {
+        setPasswordError(true);
+        setPasswordErrorMessage('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
+        isValid = false;
+      } else {
+        setPasswordError(false);
+        setPasswordErrorMessage('');
+      }
 
-    return isValid;
+      (async () => {
+          try {
+              const response = await axios.post('/api/v1/user',
+                  {
+                      'email': email.value,
+                      'password': password.value
+                  }
+              );
+              console.log('User validated successfully:', response.data);
+              isValid = true;
+          } catch (error) {
+              console.error('Error validating user:', error);
+              isValid = false;
+          }
+      })();
+
+      return isValid;
   };
 
   return (
