@@ -15,6 +15,7 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../assets/CustomIcons';
+import SvgPenguinAiPhoto from '../assets/penguin';
 import AppTheme from '../assets/template-themes/AppTheme';
 import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
 
@@ -119,7 +120,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
-          <SitemarkIcon />
+          {/* <SitemarkIcon /> */}
+          <Box sx = {{display: 'flex', justifyContent: 'flex-start', width:'100%', height: '7.5vh', marginLeft: '-15px'}}>
+            <SvgPenguinAiPhoto  width = "20vh" margin="0"/>
+          </Box>
+
           <Typography
             component="h1"
             variant="h4"
