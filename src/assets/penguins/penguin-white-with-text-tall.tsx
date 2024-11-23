@@ -1,12 +1,17 @@
-import * as React from 'react';
-
-{/* Viewbox is what makes this tick -- it wraps the icon in a container with the viewbox size which then scales
+{
+    /* Viewbox is what makes this tick -- it wraps the icon in a container with the viewbox size which then scales
     to the container -- this means that the icon scales to the appbar (etc.), instead of being cut off
     Conversion to Typescript was done with SVGR -- the SVG files are still present, if you need to transform the code
-    again for some reason, just use SVGR on the SVG files BUT be sure to add the viewbox to ensure the raster scales*/}
+    again for some reason, just use SVGR on the SVG files BUT be sure to add the viewbox to ensure the raster scales*/
+}
 
-const SvgPenguinIconWhiteWithTextTall = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width='100%' height='100%' {...props} viewBox={'0 0 550 270'}>
+const SvgPenguinIconWhiteWithTextTall = ({ size }: SVGCustomIconProps) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size * (550 / 270)}
+        height={size}
+        viewBox={'0 0 550 270'}
+    >
         <defs>
             <path
                 id="penguin-icon-white-with-text-tall_svg__a"
@@ -43,16 +48,14 @@ const SvgPenguinIconWhiteWithTextTall = (props) => (
                 fontSize: 120,
                 lineHeight: 0.9,
                 fontFamily: 'Gabriola',
-                InkscapeFontSpecification: '&quot',
                 fontVariantLigatures: 'normal',
                 fontVariantCaps: 'normal',
                 fontVariantNumeric: 'normal',
                 fontVariantEastAsian: 'normal',
                 textAlign: 'start',
-                writingMode: 'lr-tb',
+                writingMode: 'horizontal-tb',
                 direction: 'ltr',
                 whiteSpace: 'pre',
-                shapeInside: 'url(#penguin-icon-white-with-text-tall_svg__a)',
                 fill: '#000',
             }}
             transform="translate(7.568 29.651)"
@@ -67,4 +70,3 @@ const SvgPenguinIconWhiteWithTextTall = (props) => (
     </svg>
 );
 export default SvgPenguinIconWhiteWithTextTall;
-

@@ -58,7 +58,7 @@
   <text
      xml:space="preserve"
      id="text1"
-     style="font-size:120px;line-height:0.9;font-family:Gabriola;-inkscape-font-specification:'Gabriola, Normal';text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1);fill:#000000"
+     style="font-size:120px;line-height:0.9;font-family:Gabriola;-inkscape-font-specification:'Gabriola, Normal';text-align:start;writing-mode:horizontal-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1);fill:#000000"
      transform="translate(2.6913437,31.878626)"><tspan
        x="242.62109"
        y="73.804686"

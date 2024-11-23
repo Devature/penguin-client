@@ -37,7 +37,7 @@ const SvgPenguinIconWhiteWithText = (props) => (
             style={{
                 fontSize: 72,
                 fontFamily: 'Gabriola',
-                InkscapeFontSpecification: '&quot',
+
                 whiteSpace: 'pre',
             }}
             transform="translate(32.943 92.481)"

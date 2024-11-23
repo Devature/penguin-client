@@ -13,13 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
-import { Link } from 'react-router-dom';
-import {useNavigate} from 'react-router-dom';
-import SvgPenguinIconWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx'
+import { useNavigate } from 'react-router-dom';
+import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
 
-const pages = ['Projects', 'Tickets',];
-
-
+const pages = ['Projects', 'Tickets'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -35,6 +32,7 @@ function ResponsiveAppBar() {
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
+    
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -47,31 +45,43 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
+    /** Navigate to login page */
+    const handleLoginNavigate = () => {
+        navigate('/signin');
+    };
 
-    const loginHandler = () =>{
-            //handler for the login button
-            navigate('/signin');
-        };
-
-        const registerHandler = () =>{
-            //handler for the login button
-            navigate('/signup');
-        };
-
+    /** Navigate to registration page */
+    const handleRegisterNavigate = () => {
+        navigate('/signup');
+    };
 
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    {/* Box for controlling the size and alignment of the icon */}
-                    <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, height: '100%', justifyContent:'center'}}>
-                        {/* Render the icon on the appbar with a custom height of 10% of the view height and 10% of view width*/}
-                        <SvgPenguinIconWhiteWithTextTall height="10vh"/>
+                    {/* Container for desktop logo with text */}
+                    <Box
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            mr: 1,
+                            height: '100%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <PenguinIcon size={69} />
+                        <Typography
+                            variant="h1"
+                            sx={{
+                                fontFamily: 'Gabriola',
+                                fontSize: '3rem',
+                                mt: '0.4rem',
+                                ml: '0.5rem',
+                            }}
+                        >
+                            Ticket Penguin
+                        </Typography>
                     </Box>
-
-
-
-
 
                     <Box
                         sx={{
@@ -89,6 +99,28 @@ function ResponsiveAppBar() {
                         >
                             <MenuIcon />
                         </IconButton>
+                        {/* Mobile logo & text */}
+                        <Box
+                            sx={{
+                                display: { xs: 'flex', md: 'none' },
+                                mr: 1,
+                                height: '100%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <PenguinIcon size={50} />
+                            <Typography
+                                variant="h1"
+                                sx={{
+                                    fontFamily: 'Gabriola',
+                                    fontSize: '2.4rem',
+                                    mt: '0.4rem',
+                                }}
+                            >
+                                Ticket Penguin
+                            </Typography>
+                        </Box>
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
@@ -118,11 +150,6 @@ function ResponsiveAppBar() {
                         </Menu>
                     </Box>
 
-
-
-
-
-
                     {/* Right side login button/user menu */}
                     {isAuthenticated ? (
                         <>
@@ -142,7 +169,11 @@ function ResponsiveAppBar() {
                                     <Button
                                         key={page}
                                         onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                        sx={{
+                                            my: 2,
+                                            color: 'white',
+                                            display: 'block',
+                                        }}
                                     >
                                         {page}
                                     </Button>
@@ -179,7 +210,9 @@ function ResponsiveAppBar() {
                                     onClose={handleCloseUserMenu}
                                 >
                                     <MenuItem onClick={handleCloseUserMenu}>
-                                        <Typography sx={{ textAlign: 'center' }}>
+                                        <Typography
+                                            sx={{ textAlign: 'center' }}
+                                        >
                                             Dashboard
                                         </Typography>
                                     </MenuItem>
@@ -189,7 +222,9 @@ function ResponsiveAppBar() {
                                             handleCloseUserMenu();
                                         }}
                                     >
-                                        <Typography sx={{ textAlign: 'center' }}>
+                                        <Typography
+                                            sx={{ textAlign: 'center' }}
+                                        >
                                             Logout
                                         </Typography>
                                     </MenuItem>
@@ -198,23 +233,22 @@ function ResponsiveAppBar() {
                         </>
                     ) : (
                         // This makes the login and register buttons appear when the user is not authenticated
-                        <Stack spacing={2} direction="row"
+                        <Stack
+                            spacing={2}
+                            direction="row"
                             sx={{
                                 flexGrow: 1,
                                 display: { xs: 'none', md: 'flex' },
                                 ml: 2,
                                 justifyContent: 'flex-end',
-                            }}>
+                            }}
+                        >
+                            {/* button wired to navigate to the sign in page -- this is hooked into a path in routes.tsx */}
+                            <Button onClick={handleLoginNavigate}>Login</Button>
 
-                        {/* button wired to navigate to the sign in page -- this is hooked into a path in routes.tsx */}
-                        <Button onClick={() => navigate('/signin')}>
-                             Login
-                        </Button>
-
-                        <Button onClick={() => navigate('register')}>
-                            Register
-                        </Button>
-
+                            <Button onClick={handleRegisterNavigate}>
+                                Register
+                            </Button>
                         </Stack>
                     )}
                 </Toolbar>
