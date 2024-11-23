@@ -49,6 +49,10 @@ export default tseslint.config({
 });
 ```
 
-{/_ Any graphics used are stored in src/assets/{child folder} depending on the type of asset
+### Notes
+
+```
+Any graphics used are stored in src/assets/{child folder} depending on the type of asset
 Penguin logos, for example, are in src/assets/penguins
-This should keep the codebase nice and organized for maintainability -- Aaron_/}
+This should keep the codebase nice and organized for maintainability -- Aaron
+```
