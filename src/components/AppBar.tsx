@@ -15,6 +15,7 @@ import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
 import { Link } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
+import SvgPenguinLogo from '../assets/penguin-logo.tsx'
 
 const pages = ['Projects', 'Tickets',];
 
@@ -63,9 +64,12 @@ function ResponsiveAppBar() {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {/* Medium+ display */}
-                    <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}>
-                        {/* <PenguinIcon /> */}
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, height: '100%', justifyContent:'center'}}>
+                        <SvgPenguinLogo height="10vh"/>
+
                     </Box>
+
+                    {/* OLD TICKET PENGUIN TEXT -- TODO: REMOVE ONCE RUNNING THE NEW VERSION PAST THE TEAM
                     <Typography
                         variant="h6"
                         noWrap
@@ -80,6 +84,7 @@ function ResponsiveAppBar() {
                     >
                         Ticket Penguin
                     </Typography>
+                    */}
 
 
                     <Box
@@ -127,9 +132,14 @@ function ResponsiveAppBar() {
                         </Menu>
                     </Box>
 
+
+
+                    {/* OLD CODE -- DEPRECATED?? */}
                     {/* Small display */}
+                    {/*
                     <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}>
                         {/* <PenguinIcon /> */}
+                    {/*
                     </Box>
                     <Typography
                         variant="h5"
@@ -146,6 +156,7 @@ function ResponsiveAppBar() {
                     >
                         Ticket Penguin
                     </Typography>
+                    */}
 
                     {/* OLD CODE FOR ALWAYS PRESENT NAV BAR BUTTONS -- MOVING THIS TO AUTH USERS ONLY*/}
                     {/*}
