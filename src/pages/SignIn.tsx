@@ -15,7 +15,7 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../assets/CustomIcons';
-import SvgPenguinPhotoBlack from '../assets/penguin-black';
+import SvgPenguinWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx'
 import AppTheme from '../assets/template-themes/AppTheme';
 import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
 
@@ -121,8 +121,8 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           {/* <SitemarkIcon /> */}
-          <Box sx = {{display: 'flex', justifyContent: 'flex-start', width:'100%', height: '7.5vh', marginLeft: '-15px'}}>
-            <SvgPenguinPhotoBlack  width = "20vh" margin="0"/>
+          <Box sx = {{display: 'flex', justifyContent: 'flex-start', width:'100%', height: '7.5vh', marginLeft: '-30px'}}>
+            <SvgPenguinWhiteWithTextTall  width = "20vh" />
           </Box>
 
           <Typography
