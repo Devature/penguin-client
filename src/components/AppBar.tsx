@@ -64,7 +64,9 @@ function ResponsiveAppBar() {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {/* Medium+ display */}
+                    {/* Box for controlling the size and alignment of the icon */}
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, height: '100%', justifyContent:'center'}}>
+                        {/* Render the icon on the appbar with a custom height of 10% of the view height */}
                         <SvgPenguinIconWhiteWithTextTall height="10vh"/>
                     </Box>
 
