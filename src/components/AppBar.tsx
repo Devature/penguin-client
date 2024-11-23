@@ -15,7 +15,7 @@ import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
 import { Link } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
-import SvgPenguinLogo from '../assets/penguin-logo.tsx'
+import SvgPenguinIconWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx'
 
 const pages = ['Projects', 'Tickets',];
 
@@ -65,8 +65,7 @@ function ResponsiveAppBar() {
                 <Toolbar disableGutters>
                     {/* Medium+ display */}
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, height: '100%', justifyContent:'center'}}>
-                        <SvgPenguinLogo height="10vh"/>
-
+                        <SvgPenguinIconWhiteWithTextTall height="10vh"/>
                     </Box>
 
                     {/* OLD TICKET PENGUIN TEXT -- TODO: REMOVE ONCE RUNNING THE NEW VERSION PAST THE TEAM
