@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Index from './pages/Index';
 import ApiTest from './pages/ApiTest';
 import WorkIndex from './pages/WorkIndex';
-import SignIn from './pages/SignIn';
+import SignIn from './pages/SignIn'; //this imports the SignIn function from the SignIn.tsx file -- Aaron
 import Layout from './components/Layout';  // Import the Layout component
 import SignUp from './pages/SignUp';
 
