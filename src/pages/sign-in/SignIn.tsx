@@ -18,6 +18,7 @@ import { GoogleIcon, FacebookIcon } from './CustomIcons';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import axios from 'axios';
+import { penguinApi } from '../../util/axios.ts';
 import { emailRegex, passwordRegex } from '../../util/validationRegex.ts';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -104,7 +105,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
       (async () => {
           try {
-              const response = await axios.post('/api/v1/user',
+              const response = await penguinApi.post('http://localhost:8080/api/v1/user',
                   {
                       'email': email.value,
                       'password': password.value
