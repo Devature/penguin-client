@@ -14,7 +14,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../assets/CustomIcons';
+import { GoogleIcon, SitemarkIcon, MicrosoftIcon } from '../assets/CustomIcons';
 import SvgPenguinWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx'
 import AppTheme from '../assets/template-themes/AppTheme';
 import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
@@ -151,7 +151,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="your@email.com"
+                placeholder="name@company.com"
                 autoComplete="email"
                 autoFocus
                 required
@@ -166,7 +166,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 name="password"
-                placeholder="••••••"
+                placeholder="••••••••••••••"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -213,10 +213,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Facebook')}
-              startIcon={<FacebookIcon />}
+              onClick={() => alert('Sign in with Microsoft')}
+              startIcon={<MicrosoftIcon />}
             >
-              Sign in with Facebook
+              Sign in with Microsoft
             </Button>
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
