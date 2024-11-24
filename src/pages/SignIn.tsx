@@ -18,6 +18,13 @@ import { GoogleIcon, SitemarkIcon, MicrosoftIcon } from '../assets/CustomIcons';
 import SvgPenguinWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx'
 import AppTheme from '../assets/template-themes/AppTheme';
 import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
+import {useSignUpNavigation} from '../util/navigationUtilities.ts';
+
+
+{/* We're grabbing the function for navigating to the signup page by calling the hook
+    Hooks run during component rendering, returning a function that can be used to handle events
+    This has to be done at the top level-- Aaron*/}
+const navigateToSignUp = useSignUpNavigation();
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -114,6 +121,8 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     return isValid;
   };
+
+
 
   return (
     <AppTheme {...props}>
@@ -220,13 +229,14 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             </Button>
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
-              <Link
-                href="/material-ui/getting-started/templates/sign-in/"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
+
+              {/* Use an event handler to call the fetched function to navigate to sign up */}
+              <span
+                onClick={navigateToSignUp}
+                style={{color:'blue', cursor: 'pointer'}}>
                 Sign up
-              </Link>
+                </span>
+
             </Typography>
           </Box>
         </Card>
