@@ -15,6 +15,8 @@ import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
+import {useSignUpNavigation, useLoginNavigation} from '../util/navigationUtilities.ts';
+
 
 const pages = ['Projects', 'Tickets'];
 
@@ -45,15 +47,15 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
+    {/* Works the same as the sign up navigation method */}
     /** Navigate to login page */
-    const handleLoginNavigate = () => {
-        navigate('/signin');
-    };
+    const navigateToLogin  = useLoginNavigation();
 
-    /** Navigate to registration page */
-    const handleRegisterNavigate = () => {
-        navigate('/signup');
-    };
+
+    {/* We're grabbing the function for navigating to the signup page by calling the hook
+      Hooks run during component rendering, returning a function that can be used to handle events -- Aaron*/}
+      /** Navigates to registration page */
+     const navigateToSignUp = useSignUpNavigation();
 
     return (
         <AppBar position="static">
@@ -241,10 +243,10 @@ function ResponsiveAppBar() {
                                 justifyContent: 'flex-end',
                             }}
                         >
-                            {/* button wired to navigate to the sign in page -- this is hooked into a path in routes.tsx */}
-                            <Button onClick={handleLoginNavigate}>Login</Button>
+                            {/* Handlers are hooked into navigation functions from ../util/navigationUtilities.ts --Aaron*/}
+                            <Button onClick={navigateToLogin}>Login</Button>
 
-                            <Button onClick={handleRegisterNavigate}>
+                            <Button onClick={navigateToSignUp}>
                                 Register
                             </Button>
                         </Stack>
