@@ -19,6 +19,9 @@ import SvgPenguinWhiteWithTextTall from '../assets/penguins/penguin-white-with-t
 import AppTheme from '../assets/template-themes/AppTheme';
 import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
 import {useSignUpNavigation} from '../util/hooks/navigationUtilities.ts';
+import axios from 'axios';
+import { penguinApi } from '../util/axios.ts';
+import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
 
 
 {/* We're grabbing the function for navigating to the signup page by calling the hook
@@ -90,43 +93,57 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
       event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+      if (emailError || passwordError) {
+          return;
+      }
+
+      const data = new FormData(event.currentTarget);
   };
 
   const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
+        const email = document.getElementById('email') as HTMLInputElement;
+        const password = document.getElementById('password') as HTMLInputElement;
 
-    let isValid = true;
+        let isValid;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
-    }
+        if (!email.value || !emailRegex.test(email.value)) {
+          setEmailError(true);
+          setEmailErrorMessage('Please enter a valid email address.');
+          isValid = false;
+        } else {
+          setEmailError(false);
+          setEmailErrorMessage('');
+        }
 
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
-    }
+        if (!password.value || !passwordRegex.test(password.value) ) {
+          setPasswordError(true);
+          setPasswordErrorMessage('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
+          isValid = false;
+        } else {
+          setPasswordError(false);
+          setPasswordErrorMessage('');
+        }
 
-    return isValid;
-  };
+        (async () => {
+            try {
+                const response = await penguinApi.post('http://localhost:8080/api/v1/user/login',
+                    {
+                        'email': email.value,
+                        'password': password.value
+                    }
+                );
+                console.log('User validated successfully:', response.data);
+                isValid = true;
+            } catch (error) {
+                console.error('Error validating user:', error);
+                isValid = false;
+            }
+        })();
+
+        return isValid;
+    };
 
 
 {/* This is the JSX returned when the sign in function is called */}
