@@ -24,7 +24,8 @@ import {useSignUpNavigation} from '../util/navigationUtilities.ts';
 {/* We're grabbing the function for navigating to the signup page by calling the hook
     Hooks run during component rendering, returning a function that can be used to handle events
     This has to be done at the top level-- Aaron*/}
-const navigateToSignUp = useSignUpNavigation();
+{/* This was working before, now it's broken -- fixed by moving this to the Sign In function for some reason? */}
+{/*const navigateToSignUp = useSignUpNavigation(); */}
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -74,6 +75,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+
+
+  // Call useSignUpNavigation inside the component to follow hook rules
+  const navigateToSignUp = useSignUpNavigation();
 
   const handleClickOpen = () => {
     setOpen(true);
