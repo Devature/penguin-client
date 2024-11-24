@@ -18,7 +18,7 @@ import { GoogleIcon, SitemarkIcon, MicrosoftIcon } from '../assets/CustomIcons';
 import SvgPenguinWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx'
 import AppTheme from '../assets/template-themes/AppTheme';
 import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
-import {useSignUpNavigation} from '../util/navigationUtilities.ts';
+import {useSignUpNavigation} from '../util/hooks/navigationUtilities.ts';
 
 
 {/* We're grabbing the function for navigating to the signup page by calling the hook
@@ -69,6 +69,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
+{/* This is imported into the router, so it's whats rendered when the signin.tsx page is navigated to */}
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
@@ -128,7 +129,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
 
-
+{/* This is the JSX returned when the sign in function is called */}
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
