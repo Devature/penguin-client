@@ -7,7 +7,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import SvgPenguinWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx';
-import { useSignInNavigation } from '../util/hooks/navigationUtilities.ts';
+import { useLoginNavigation } from '../util/hooks/navigationUtilities.ts';
 
  {/* Styling for parent card */}
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -145,7 +145,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     });
   };
 
-  const navigateToSignIn = useSignInNavigation();
+  const navigateToSignIn = useLoginNavigation();
 
   return (
     <AppTheme {...props}>
