@@ -14,11 +14,12 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import { GoogleIcon, SitemarkIcon, MicrosoftIcon } from '../assets/CustomIcons';
 import SvgPenguinWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx'
 import AppTheme from '../assets/template-themes/AppTheme';
 import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
 import {useSignUpNavigation} from '../util/hooks/navigationUtilities.ts';
+import { GoogleIcon } from '../components/icons/GoogleIcon.tsx';
+import { MicrosoftIcon } from '../components/icons/MicrosoftIcon.tsx';
 
 
 {/* We're grabbing the function for navigating to the signup page by calling the hook
@@ -137,7 +138,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         <Card variant="outlined">
           {/* <SitemarkIcon /> */}
           <Box sx = {{display: 'flex', justifyContent: 'flex-start', width:'100%', height: '7.5vh', marginLeft: '-30px'}}>
-            <SvgPenguinWhiteWithTextTall  width = "20vh" />
+            <SvgPenguinWhiteWithTextTall size={100} />
           </Box>
 
           <Typography

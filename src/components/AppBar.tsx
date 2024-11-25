@@ -13,7 +13,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
-import { useNavigate } from 'react-router-dom';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
 import {useSignUpNavigation, useLoginNavigation} from '../util/hooks/navigationUtilities.ts';
 
@@ -28,8 +27,6 @@ function ResponsiveAppBar() {
         null
     );
     const { isAuthenticated, setIsAuthenticated } = useAuth();
-
-    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
