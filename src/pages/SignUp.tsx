@@ -2,12 +2,14 @@ import React from 'react';
 import { Box, Button, CssBaseline, Divider, FormLabel, FormControl, Link, TextField, Typography, Stack, Card as MuiCard, Tooltip, InputAdornment, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../assets/template-themes/AppTheme';
-import { GoogleIcon, FacebookIcon } from '../assets/CustomIcons';
+import { GoogleIcon, MicrosoftIcon } from '../assets/CustomIcons';
 import InfoIcon from '@mui/icons-material/Info';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import SvgPenguinWhiteWithTextTall from '../assets/penguins/penguin-white-with-text-tall.tsx';
+import { useSignInNavigation } from '../util/hooks/navigationUtilities.ts';
 
-
+ {/* Styling for parent card */}
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -27,6 +29,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
+ {/* styling for sign up container */}
 const SignUpContainer = styled(Stack)(({ theme }) => ({
   height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
   minHeight: '100%',
@@ -50,6 +53,7 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
+ {/* Checking functions to make sure all inputs are valid */}
 export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
@@ -125,6 +129,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     return isValid;
   };
 
+   {/* Function for submitting user info to backend
+    SHOULD CALL API */}
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (firstNameError || lastNameError || emailError || passwordError) {
       event.preventDefault();
@@ -139,11 +145,20 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     });
   };
 
+  const navigateToSignIn = useSignInNavigation();
+
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <SignUpContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
+
+          {/* Ticket Penguin Icon */}
+          <Box sx = {{display: 'flex', justifyContent: 'flex-start', width:'100%', height: '7.5vh', marginLeft: '-30px'}}>
+            <SvgPenguinWhiteWithTextTall/>
+          </Box>
+
+          {/* Sign Up title*/}
           <Typography
             component="h1"
             variant="h4"
@@ -151,12 +166,16 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           >
             Sign up
           </Typography>
+
+          {/* Form div */}
           <Box
             component="form"
             onSubmit={handleSubmit}
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
             <Stack component="div" direction="row" spacing={2}>
+
+               {/* First name input field */}
                 <FormControl>
                 <FormLabel htmlFor="firstname">First Name</FormLabel>
                 <TextField
@@ -171,6 +190,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 />
                 </FormControl>
 
+                 {/* Last name input field */}
                 <FormControl>
                 <FormLabel htmlFor="lastname">Last Name</FormLabel>
                 <TextField
@@ -184,7 +204,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                     helperText={lastNameErrorMessage}
                 />
                 </FormControl>
+
             </Stack>
+
+             {/* Email input field */}
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
@@ -200,6 +223,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
               />
             </FormControl>
             
+             {/* Password input field */}
             <FormControl>
               <FormLabel htmlFor="password">Password</FormLabel>
               <TextField
@@ -247,6 +271,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
               />
             </FormControl>
 
+             {/* Reenter password field */}
             <FormControl>
               <FormLabel htmlFor="reenterPassword">Re-Enter Password</FormLabel>
               <TextField
@@ -272,6 +297,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                     ),
                   }}
               />
+
+             {/* Submit user information */}
             </FormControl>
             <Button
               type="submit"
@@ -282,9 +309,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
               Sign up
             </Button>
           </Box>
+
           <Divider>
             <Typography sx={{ color: 'text.secondary' }}>or</Typography>
           </Divider>
+
+           {/* Google SSO */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
               fullWidth
@@ -294,24 +324,27 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             >
               Sign up with Google
             </Button>
+
+             {/* Microsoft SSO */}
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign up with Facebook')}
-              startIcon={<FacebookIcon />}
+              onClick={() => alert('Sign in with Microsoft')}
+              startIcon={<MicrosoftIcon />}
             >
-              Sign up with Facebook
+              Sign up with Microsoft
             </Button>
+
+             {/* Navigate to sign up page */}
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
-              <Link
-                href="/material-ui/getting-started/templates/sign-in/"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
+              <span
+                onClick={navigateToSignIn}
+                style={{color:'blue', cursor: 'pointer', textDecoration: 'underline'}}>
                 Sign in
-              </Link>
+              </span>
             </Typography>
+
           </Box>
         </Card>
       </SignUpContainer>
