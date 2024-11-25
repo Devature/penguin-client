@@ -17,7 +17,6 @@ import { useNavigate } from 'react-router-dom';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
 import {useSignUpNavigation, useLoginNavigation} from '../util/hooks/navigationUtilities.ts';
 
-
 const pages = ['Projects', 'Tickets'];
 
 function ResponsiveAppBar() {
@@ -29,7 +28,6 @@ function ResponsiveAppBar() {
     );
     const { isAuthenticated, setIsAuthenticated } = useAuth();
 
-    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
