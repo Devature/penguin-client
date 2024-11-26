@@ -102,11 +102,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       const data = new FormData(event.currentTarget);
   };
 
-  const validateInputs = () => {
-        const email = document.getElementById('email') as HTMLInputElement;
-        const password = document.getElementById('password') as HTMLInputElement;
-
-        let isValid;
+// client side input validation for email and password
+  const validateInputs: boolean = (email, password) => {
+        let isValid = true;
 
         if (!email.value || !emailRegex.test(email.value)) {
           setEmailError(true);
@@ -126,23 +124,40 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           setPasswordErrorMessage('');
         }
 
-        (async () => {
-            try {
-                const response = await penguinApi.post('http://localhost:8080/api/v1/user/login',
-                    {
-                        'email': email.value,
-                        'password': password.value
-                    }
-                );
-                console.log('User validated successfully:', response.data);
-                isValid = true;
-            } catch (error) {
-                console.error('Error validating user:', error);
-                isValid = false;
-            }
-        })();
-
         return isValid;
+    };
+
+// server site validation for email and password
+    const attemptSignIn: Promise<boolean> = async (email, password) => {
+        try {
+            const response = await penguinApi.post('http://localhost:8080/api/v1/user/login',
+                {
+                    'email': email.value,
+                    'password': password.value
+                }
+            );
+            console.log('User validated successfully:', response.data);
+            return response.status === 200;
+        } catch (error) {
+            console.error('Error validating user:', error);
+            return false;
+        }
+    };
+
+    const onSignInClick = () => {
+        const email = document.getElementById('email') as HTMLInputElement;
+        const password = document.getElementById('password') as HTMLInputElement;
+
+        if (validateInputs(email, password)) {
+            attemptSignIn(email, password)
+                .then((isSuccess: boolean) => {
+                    if (isSuccess) {
+                        console.log("Success");
+                    } else {
+                        console.error("Bad Login credentials");
+                    }
+                });
+        }
     };
 
 
@@ -218,7 +233,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
+              onClick={onSignInClick}
             >
               Sign in
             </Button>
