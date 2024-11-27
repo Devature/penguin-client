@@ -160,6 +160,13 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         return true;
     };
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (!validateForm) return;
+        const data = new FormData(event.currentTarget);
+    };
+
 // server site validation for email and password
     const attemptSignUp = async (): Promise<boolean> => {
         try {
