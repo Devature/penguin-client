@@ -20,6 +20,7 @@ import { MicrosoftIcon } from '../components/icons/MicrosoftIcon.tsx';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
 import { penguinApi } from '../util/axios.ts';
 import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
+import { Alert } from '@mui/material';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -69,6 +70,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [signInError, setSignInError] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
 
@@ -94,32 +96,36 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
 // client side input validation for email and password
-  const validateInputs: boolean = (email, password) => {
-        let isValid = true;
+  const validateInputs =
+      (email: HTMLInputElement, password: HTMLInputElement): boolean => {
+      let isValid = true;
 
-        if (!email.value || !emailRegex.test(email.value)) {
+      if (!email.value || !emailRegex.test(email.value)) {
           setEmailError(true);
           setEmailErrorMessage('Please enter a valid email address.');
           isValid = false;
-        } else {
+      } else {
           setEmailError(false);
           setEmailErrorMessage('');
-        }
+      }
 
-        if (!password.value || !passwordRegex.test(password.value) ) {
+      if (!password.value || !passwordRegex.test(password.value)) {
           setPasswordError(true);
-          setPasswordErrorMessage('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
+          setPasswordErrorMessage(
+              'Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.'
+          );
           isValid = false;
-        } else {
+      } else {
           setPasswordError(false);
           setPasswordErrorMessage('');
-        }
+      }
 
-        return isValid;
-    };
+      return isValid;
+  };
 
 // server site validation for email and password
-    const attemptSignIn: Promise<boolean> = async (email, password) => {
+    const attemptSignIn =
+        async (email: HTMLInputElement, password: HTMLInputElement): Promise<boolean> => {
         try {
             const response = await penguinApi.post('/api/v1/user/login',
                 {
@@ -131,6 +137,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             return response.status === 200;
         } catch (error) {
             console.error('Error validating user:', error);
+            if (error.response && error.response.status === 401) setSignInError('Invalid email or password.');
+            else if (error.response && error.response.status === 500) setSignInError('An internal server error occurred. Please try again.');
+            else setSignInError('An unexpected error occurred. Please try again later.')
             return false;
         }
     };
@@ -235,6 +244,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         }
                         label="Remember me"
                     />
+                    {signInError && <Alert severity="error">{signInError}</Alert>}
                     <ForgotPassword open={open} handleClose={handleClose} />
                     <Button
                         type="submit"
