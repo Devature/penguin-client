@@ -159,22 +159,11 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         return true;
     };
 
-    {
-        /* Function for submitting user info to backend
-    SHOULD CALL API */
-    }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (!validateForm) return;
         const data = new FormData(event.currentTarget);
-        // TODO: Connect to API
-        console.log({
-            firstName: data.get('firstName'),
-            lastName: data.get('lastName'),
-            email: data.get('email'),
-            password: data.get('password'),
-        });
     };
 
 // server site validation for email and password

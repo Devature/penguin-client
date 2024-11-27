@@ -21,13 +21,6 @@ import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
 import { penguinApi } from '../util/axios.ts';
 import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
 
-
-{/* We're grabbing the function for navigating to the signup page by calling the hook
-    Hooks run during component rendering, returning a function that can be used to handle events
-    This has to be done at the top level-- Aaron*/}
-{/* This was working before, now it's broken -- fixed by moving this to the Sign In function for some reason? */}
-{/*const navigateToSignUp = useSignUpNavigation(); */}
-
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -128,7 +121,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 // server site validation for email and password
     const attemptSignIn: Promise<boolean> = async (email, password) => {
         try {
-            const response = await penguinApi.post('http://localhost:8080/api/v1/user/login',
+            const response = await penguinApi.post('/api/v1/user/login',
                 {
                     'email': email.value,
                     'password': password.value
@@ -154,6 +147,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         navigateHome();
                     } else {
                         console.error("Bad Login credentials");
+                        setPasswordErrorMessage("Invalid sign in credentials. Check email and password and try again.")
                     }
                 });
         }
