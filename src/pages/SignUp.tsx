@@ -22,6 +22,9 @@ import { useLoginNavigation } from '../util/hooks/navigationUtilities.ts';
 import { MicrosoftIcon } from '../components/icons/MicrosoftIcon.tsx';
 import { GoogleIcon } from '../components/icons/GoogleIcon.tsx';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
+import axios from 'axios';
+import { penguinApi } from '../util/axios.ts';
+import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
 
 {
     /* Styling for parent card */
@@ -141,11 +144,11 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     };
 
     const validateEmail = (email: string) => {
-        return /\S+@\S+\.\S+/.test(email);
+        return emailRegex.test(email);
     };
 
     const validatePassword = (password: string) => {
-        return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~`!@#$%^&*()\-_+={}[\]|;:<>,./?]).{8,}$/.test(
+        return passwordRegex.test(
             password
         );
     };
@@ -162,6 +165,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     SHOULD CALL API */
     }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
         if (!validateForm) return;
         const data = new FormData(event.currentTarget);
         // TODO: Connect to API
@@ -171,6 +176,30 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             email: data.get('email'),
             password: data.get('password'),
         });
+    };
+
+// server site validation for email and password
+    const attemptSignUp: Promise<boolean> = async () => {
+        try {
+            const response = await penguinApi.post('http://localhost:8080/api/v1/user/registration',
+                {
+                    'name': (firstName + " " + lastName),
+                    'email': email,
+                    'password': password
+                }
+            );
+            console.log('User registered successfully:', response.data);
+            return response.status === 200;
+        } catch (error) {
+            console.error('Error registering user:', error);
+            return false;
+        }
+    };
+
+    const onRegisterClick = () => {
+        if ( validateForm() )
+            if ( attemptSignUp() )
+                navigateToSignIn();
     };
 
     const navigateToSignIn = useLoginNavigation();
@@ -448,7 +477,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            onClick={validateForm}
+                            onClick={onRegisterClick}
                         >
                             Register
                         </Button>

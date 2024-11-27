@@ -29,3 +29,14 @@ export const useLoginNavigation = (): (() => void) => {
         navigate('/signin');
     };
 };
+
+/**
+ * Hook for navigating to the main page after successful login
+ */
+export const useDashboardNavigation = (): (() => void) => {
+    const navigate: NavigateFunction = useNavigate();
+
+    return () => {
+        navigate('/');
+    };
+};

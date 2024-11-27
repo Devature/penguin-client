@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
+import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
@@ -13,278 +14,292 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
+import ColorModeSelect from '../assets/template-themes/ColorModeSelect';
 import AppTheme from '../assets/template-themes/AppTheme';
-import { useSignUpNavigation } from '../util/hooks/navigationUtilities.ts';
+import { useSignUpNavigation, useDashboardNavigation } from '../util/hooks/navigationUtilities.ts';
 import { GoogleIcon } from '../components/icons/GoogleIcon.tsx';
 import { MicrosoftIcon } from '../components/icons/MicrosoftIcon.tsx';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
+import axios from 'axios';
+import { penguinApi } from '../util/axios.ts';
+import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
 
-{
-    /* We're grabbing the function for navigating to the signup page by calling the hook
+
+{/* We're grabbing the function for navigating to the signup page by calling the hook
     Hooks run during component rendering, returning a function that can be used to handle events
-    This has to be done at the top level-- Aaron*/
-}
+    This has to be done at the top level-- Aaron*/}
+{/* This was working before, now it's broken -- fixed by moving this to the Sign In function for some reason? */}
+{/*const navigateToSignUp = useSignUpNavigation(); */}
 
 const Card = styled(MuiCard)(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignSelf: 'center',
-    width: '100%',
-    padding: theme.spacing(4),
-    gap: theme.spacing(2),
-    margin: 'auto',
-    [theme.breakpoints.up('sm')]: {
-        maxWidth: '450px',
-    },
+  display: 'flex',
+  flexDirection: 'column',
+  alignSelf: 'center',
+  width: '100%',
+  padding: theme.spacing(4),
+  gap: theme.spacing(2),
+  margin: 'auto',
+  [theme.breakpoints.up('sm')]: {
+    maxWidth: '450px',
+  },
+  boxShadow:
+    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
+  ...theme.applyStyles('dark', {
     boxShadow:
-        'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-    ...theme.applyStyles('dark', {
-        boxShadow:
-            'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-    }),
+      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
+  }),
 }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
-    height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
-    minHeight: '100%',
-    padding: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-        padding: theme.spacing(4),
-    },
-    '&::before': {
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        zIndex: -1,
-        inset: 0,
-        backgroundImage:
-            'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-        backgroundRepeat: 'no-repeat',
-        ...theme.applyStyles('dark', {
-            backgroundImage:
-                'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-        }),
-    },
+  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
+  minHeight: '100%',
+  padding: theme.spacing(2),
+  [theme.breakpoints.up('sm')]: {
+    padding: theme.spacing(4),
+  },
+  '&::before': {
+    content: '""',
+    display: 'block',
+    position: 'absolute',
+    zIndex: -1,
+    inset: 0,
+    backgroundImage:
+      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+    backgroundRepeat: 'no-repeat',
+    ...theme.applyStyles('dark', {
+      backgroundImage:
+        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+    }),
+  },
 }));
 
-{
-    /* This is imported into the router, so it's whats rendered when the signin.tsx page is navigated to */
-}
+{/* This is imported into the router, so it's whats rendered when the signin.tsx page is navigated to */}
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
-    const [email, setEmail] = useState('');
-    const [emailError, setEmailError] = useState(false);
-    const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    };
-    const handleBlurEmail = () => {
-        if (!validateEmail(email)) {
-            setEmailError(true);
+  const [emailError, setEmailError] = React.useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+
+
+  // Call useSignUpNavigation inside the component to follow hook rules
+  const navigateToSignUp = useSignUpNavigation();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (emailError || passwordError) {
+          return;
+      }
+
+      const data = new FormData(event.currentTarget);
+  };
+
+// client side input validation for email and password
+  const validateInputs: boolean = (email, password) => {
+        let isValid = true;
+
+        if (!email.value || !emailRegex.test(email.value)) {
+          setEmailError(true);
+          setEmailErrorMessage('Please enter a valid email address.');
+          isValid = false;
         } else {
-            setEmailError(false);
+          setEmailError(false);
+          setEmailErrorMessage('');
         }
-    };
 
-    const [password, setPassword] = useState('');
-    const [passwordError, setPasswordError] = useState(false);
-    const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    };
-    const handleBlurPassword = () => {
-        if (!validatePassword(password)) {
-            setPasswordError(true);
+        if (!password.value || !passwordRegex.test(password.value) ) {
+          setPasswordError(true);
+          setPasswordErrorMessage('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
+          isValid = false;
         } else {
-            setPasswordError(false);
+          setPasswordError(false);
+          setPasswordErrorMessage('');
+        }
+
+        return isValid;
+    };
+
+// server site validation for email and password
+    const attemptSignIn: Promise<boolean> = async (email, password) => {
+        try {
+            const response = await penguinApi.post('http://localhost:8080/api/v1/user/login',
+                {
+                    'email': email.value,
+                    'password': password.value
+                }
+            );
+            sessionStorage.setItem('token', response.data.token);
+            return response.status === 200;
+        } catch (error) {
+            console.error('Error validating user:', error);
+            return false;
         }
     };
 
-    const [open, setOpen] = useState(false);
+    const onSignInClick = () => {
+        const email = document.getElementById('email') as HTMLInputElement;
+        const password = document.getElementById('password') as HTMLInputElement;
 
-    // Call useSignUpNavigation inside the component to follow hook rules
-    const navigateToSignUp = useSignUpNavigation();
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        if (emailError || passwordError) {
-            event.preventDefault();
-            return;
+        if (validateInputs(email, password)) {
+            attemptSignIn(email, password)
+                .then((isSuccess: boolean) => {
+                    if (isSuccess) {
+                        console.log("Success");
+                        navigateHome();
+                    } else {
+                        console.error("Bad Login credentials");
+                    }
+                });
         }
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
     };
 
-    const validateEmail = (email: string) => {
-        return /\S+@\S+\.\S+/.test(email);
-    };
 
-    const validatePassword = (password: string) => {
-        return password.length > 5;
-    };
+    const navigateHome = useDashboardNavigation();
 
-    const validateForm = () => {
-        return validateEmail(email) && validatePassword(password);
-    };
+{/* This is the JSX returned when the sign in function is called */}
+  return (
+    <AppTheme {...props}>
+        {/* <CssBaseline enableColorScheme /> */}
+        <SignInContainer direction="column" justifyContent="space-between">
+            <Card variant="outlined" sx={{ position: 'relative' }}>
+                {/* Ticket Penguin Icon */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                    }}
+                >
+                    <PenguinIcon size={50} />
+                </Box>
 
-    {
-        /* This is the JSX returned when the sign in function is called */
-    }
-    return (
-        <AppTheme {...props}>
-            {/* <CssBaseline enableColorScheme /> */}
-            <SignInContainer direction="column" justifyContent="space-between">
-                <Card variant="outlined" sx={{ position: 'relative' }}>
-                    {/* Ticket Penguin Icon */}
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: 10,
-                            right: 10,
-                        }}
-                    >
-                        <PenguinIcon size={50} />
-                    </Box>
-
-                    <Typography
-                        component="h1"
-                        variant="h4"
-                        sx={{
-                            width: '100%',
-                            fontSize: 'clamp(2rem, 10vw, 2.15rem)',
-                            textAlign: 'center',
-                        }}
-                    >
-                        Sign In
-                    </Typography>
-                    <Box
-                        component="form"
-                        onSubmit={handleSubmit}
-                        noValidate
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: '100%',
-                            gap: 2,
-                        }}
-                    >
-                        <FormControl>
-                            <FormLabel htmlFor="email">Email</FormLabel>
-                            <TextField
-                                error={emailError}
-                                helperText={
-                                    !emailError
-                                        ? ''
-                                        : 'Please enter a valid email'
-                                }
-                                id="email"
-                                type="email"
-                                name="email"
-                                placeholder="name@company.com"
-                                value={email}
-                                autoComplete="email"
-                                autoFocus
-                                required
-                                fullWidth
-                                variant="outlined"
-                                color={emailError ? 'error' : 'primary'}
-                                onChange={handleChangeEmail}
-                                onBlur={handleBlurEmail}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel htmlFor="password">Password</FormLabel>
-                            <TextField
-                                error={passwordError}
-                                helperText={
-                                    !passwordError
-                                        ? ''
-                                        : 'Password must be at least 6 characters long'
-                                }
-                                name="password"
-                                placeholder="••••••••••••••"
-                                value={password}
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                autoFocus
-                                required
-                                fullWidth
-                                variant="outlined"
-                                color={passwordError ? 'error' : 'primary'}
-                                onChange={handleChangePassword}
-                                onBlur={handleBlurPassword}
-                            />
-                        </FormControl>
-                        <FormControlLabel
-                            control={
-                                <Checkbox value="remember" color="primary" />
-                            }
-                            label="Remember me"
+                <Typography
+                    component="h1"
+                    variant="h4"
+                    sx={{
+                        width: '100%',
+                        fontSize: 'clamp(2rem, 10vw, 2.15rem)',
+                        textAlign: 'center',
+                    }}
+                >
+                    Sign In
+                </Typography>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '100%',
+                        gap: 2,
+                    }}
+                >
+                    <FormControl>
+                        <FormLabel htmlFor="email">Email</FormLabel>
+                        <TextField
+                            error={emailError}
+                            helperText={emailErrorMessage}
+                            id="email"
+                            type="email"
+                            name="email"
+                            placeholder="name@company.com"
+                            autoComplete="email"
+                            autoFocus
+                            required
+                            fullWidth
+                            variant="outlined"
+                            color={emailError ? 'error' : 'primary'}
                         />
-                        <ForgotPassword open={open} handleClose={handleClose} />
-                        <Button
-                            type="submit"
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel htmlFor="password">Password</FormLabel>
+                        <TextField
+                            error={passwordError}
+                            helperText={passwordErrorMessage}
+                            name="password"
+                            placeholder="••••••••••••••"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            autoFocus
+                            required
                             fullWidth
-                            variant="contained"
-                            onClick={validateForm}
-                        >
-                            Login
-                        </Button>
-                        <Link
-                            component="button"
-                            type="button"
-                            onClick={handleClickOpen}
-                            variant="body2"
-                            sx={{ alignSelf: 'center' }}
-                        >
-                            Forgot your password?
-                        </Link>
-                    </Box>
-                    <Divider>or</Divider>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 2,
-                        }}
+                            variant="outlined"
+                            color={passwordError ? 'error' : 'primary'}
+                    />
+                    </FormControl>
+                    <FormControlLabel
+                        control={
+                            <Checkbox value="remember" color="primary" />
+                        }
+                        label="Remember me"
+                    />
+                    <ForgotPassword open={open} handleClose={handleClose} />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        onClick={onSignInClick}
                     >
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => alert('Sign in with Google')}
-                            startIcon={<GoogleIcon />}
+                        Login
+                    </Button>
+                    <Link
+                        component="button"
+                        type="button"
+                        onClick={handleClickOpen}
+                        variant="body2"
+                        sx={{ alignSelf: 'center' }}
+                    >
+                        Forgot your password?
+                    </Link>
+                </Box>
+                <Divider>or</Divider>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2,
+                    }}
+                >
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        onClick={() => alert('Sign in with Google')}
+                        startIcon={<GoogleIcon />}
+                    >
+                        Sign in with Google
+                    </Button>
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        onClick={() => alert('Sign in with Microsoft')}
+                        startIcon={<MicrosoftIcon />}
+                    >
+                        Sign in with Microsoft
+                    </Button>
+                    <Typography sx={{ textAlign: 'center' }}>
+                        Don&apos;t have an account?{' '}
+                        {/* Use an event handler to call the fetched function to navigate to sign up */}
+                        <span
+                            onClick={navigateToSignUp}
+                            style={{ color: 'blue', cursor: 'pointer' }}
                         >
-                            Sign in with Google
-                        </Button>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => alert('Sign in with Microsoft')}
-                            startIcon={<MicrosoftIcon />}
-                        >
-                            Sign in with Microsoft
-                        </Button>
-                        <Typography sx={{ textAlign: 'center' }}>
-                            Don&apos;t have an account?{' '}
-                            {/* Use an event handler to call the fetched function to navigate to sign up */}
-                            <span
-                                onClick={navigateToSignUp}
-                                style={{ color: 'blue', cursor: 'pointer' }}
-                            >
-                                Sign up
-                            </span>
-                        </Typography>
-                    </Box>
-                </Card>
-            </SignInContainer>
-        </AppTheme>
-    );
+                            Sign up
+                        </span>
+                    </Typography>
+                </Box>
+            </Card>
+        </SignInContainer>
+    </AppTheme>
+  );
 }
