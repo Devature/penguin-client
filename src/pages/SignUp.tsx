@@ -22,7 +22,6 @@ import { useLoginNavigation } from '../util/hooks/navigationUtilities.ts';
 import { MicrosoftIcon } from '../components/icons/MicrosoftIcon.tsx';
 import { GoogleIcon } from '../components/icons/GoogleIcon.tsx';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
-import axios from 'axios';
 import { penguinApi } from '../util/axios.ts';
 import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
 
