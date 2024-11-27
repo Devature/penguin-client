@@ -155,32 +155,15 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const validateForm = () => {
         if (!email || !validateEmail(email)) return false;
         if (!password || !validatePassword(password)) return false;
+        if (password !== reenterPassword) return false;
         if (!firstName || !lastName) return false;
         return true;
     };
 
-    {
-        /* Function for submitting user info to backend
-    SHOULD CALL API */
-    }
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        if (!validateForm) return;
-        const data = new FormData(event.currentTarget);
-        // TODO: Connect to API
-        console.log({
-            firstName: data.get('firstName'),
-            lastName: data.get('lastName'),
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
-
 // server site validation for email and password
-    const attemptSignUp: Promise<boolean> = async () => {
+    const attemptSignUp = async (): Promise<boolean> => {
         try {
-            const response = await penguinApi.post('http://localhost:8080/api/v1/user/registration',
+            const response = await penguinApi.post('/api/v1/user/registration',
                 {
                     'name': (firstName + " " + lastName),
                     'email': email,
@@ -196,9 +179,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     };
 
     const onRegisterClick = () => {
-        if ( validateForm() )
-            if ( attemptSignUp() )
-                navigateToSignIn();
+        if (validateForm())
+            attemptSignUp()
+                .then(navigateToSignIn)
     };
 
     const navigateToSignIn = useLoginNavigation();
@@ -235,7 +218,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                     {/* Form div */}
                     <Box
                         component="form"
-                        onSubmit={handleSubmit}
+                        onSubmit={onRegisterClick}
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
