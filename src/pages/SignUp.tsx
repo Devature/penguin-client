@@ -78,24 +78,32 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 }
 export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const [firstName, setFirstName] = useState('');
+
+    //name change errors are basically to check for whitespace
     const [firstNameError, setFirstNameError] = useState(false);
+
+    {/* react state changes (like setFirstName) are asynchronous, causing handleBlurFirstName to happen on the old state
+        handlers for these -- particularly on blur -- are in the dom return*/}
     const handleChangeFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstName(e.target.value);
-        handleBlurFirstName();
-    };
-    const handleBlurFirstName = () => {
-        setFirstNameError(!firstName.length ? true : false);
+        const newNameValue = e.target.value;
+        setFirstName(newNameValue);
+
+        //we decided to use trim.length over a custom import
+        setFirstNameError(!newNameValue.trim().length);
     };
 
+
     const [lastName, setLastName] = useState('');
+
     const [lastNameError, setLastNameError] = useState(false);
     const handleChangeLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLastName(e.target.value);
-        handleBlurLastName();
+        const newNameValue = e.target.value;
+        setLastName(newNameValue);
+
+        //checking for whitespace
+        setLastNameError(!newNameValue.trim().length);
     };
-    const handleBlurLastName = () => {
-        setLastNameError(!lastName.length ? true : false);
-    };
+
 
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(false);
@@ -253,11 +261,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                                     placeholder="John"
                                     value={firstName}
                                     onChange={handleChangeFirstName}
-                                    onBlur={handleBlurFirstName}
                                     error={firstNameError}
                                     helperText={
                                         !firstNameError
-                                            ? ''
+                                            ? '\u00A0'
                                             : 'Please enter your first name'
                                     }
                                 />
@@ -277,11 +284,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                                     placeholder="Doe"
                                     value={lastName}
                                     onChange={handleChangeLastName}
-                                    onBlur={handleBlurLastName}
                                     error={lastNameError}
                                     helperText={
                                         !lastNameError
-                                            ? ''
+                                            ? '\u00A0'
                                             : 'Please enter your last name'
                                     }
                                 />
