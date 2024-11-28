@@ -481,7 +481,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                         <Button
                             fullWidth
                             variant="outlined"
-                            onClick={() => alert('Sign in with Microsoft')}
+                            onClick={() => alert('Sign up with Microsoft')}
                             startIcon={<MicrosoftIcon />}
                         >
                             Sign up with Microsoft
