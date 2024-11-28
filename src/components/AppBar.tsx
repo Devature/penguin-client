@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
-import {useSignUpNavigation, useLoginNavigation} from '../util/hooks/navigationUtilities.ts';
+import {useSignUpNavigation, useLoginNavigation, useOrganizationNavigation} from '../util/hooks/navigationUtilities.ts';
 
 
 const pages = ['Projects', 'Tickets'];
@@ -47,6 +47,7 @@ function ResponsiveAppBar() {
     {/* Works the same as the sign up navigation method */}
     /** Navigate to login page */
     const navigateToLogin  = useLoginNavigation();
+    const navigateToUserOrg  = useOrganizationNavigation();
 
 
     {/* We're grabbing the function for navigating to the signup page by calling the hook
@@ -241,10 +242,16 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {/* Handlers are hooked into navigation functions from ../util/navigationUtilities.ts --Aaron*/}
-                            <Button onClick={navigateToLogin}>Login</Button>
+                            <Button onClick={navigateToLogin}>
+                                Login
+                            </Button>
 
                             <Button onClick={navigateToSignUp}>
                                 Register
+                            </Button>
+
+                            <Button onClick={navigateToUserOrg}>
+                                TEST
                             </Button>
                         </Stack>
                     )}

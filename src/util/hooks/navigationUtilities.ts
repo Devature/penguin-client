@@ -29,3 +29,12 @@ export const useLoginNavigation = (): (() => void) => {
         navigate('/signin');
     };
 };
+
+/** Same as the sign up navigation function but navigates to the organization page */
+export const useOrganizationNavigation = (): (() => void) => {
+    const navigate: NavigateFunction = useNavigate();
+
+    return () => {
+        navigate('/userorgs');
+    };
+};
