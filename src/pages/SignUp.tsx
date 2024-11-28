@@ -89,7 +89,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         setFirstName(newNameValue);
 
         //we decided to use trim.length over a custom import
-        setFirstNameError(!newNameValue.trim().length);
+        //the ternary is a placeholder for a later error message
+        setFirstNameError(!newNameValue.trim().length ? true:false);
     };
 
 
@@ -101,7 +102,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         setLastName(newNameValue);
 
         //checking for whitespace
-        setLastNameError(!newNameValue.trim().length);
+        //the ternary is a placeholder for a later error message
+        setLastNameError(!newNameValue.trim().length ? true:false);
     };
 
 
