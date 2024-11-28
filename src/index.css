@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Gabriola';
+    src:
+        local('Gabriola'),
+        url(./assets/fonts/gabriola.ttf) format('ttf');
+}
+
 :root {
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -9,4 +16,5 @@ body {
     margin: 0;
     display: flex;
     place-items: center;
+    overflow-x: hidden;
 }

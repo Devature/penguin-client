@@ -20,6 +20,8 @@ export default tseslint.config(
             'unused-imports': unusedImports,
         },
         rules: {
+            "no-control-regex": "off",
+            "no-useless-escape": "off",
             ...reactHooks.configs.recommended.rules,
             'react-refresh/only-export-components': [
                 'warn',
