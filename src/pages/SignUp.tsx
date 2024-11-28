@@ -81,6 +81,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const [firstNameError, setFirstNameError] = useState(false);
     const handleChangeFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
+        handleBlurFirstName();
     };
     const handleBlurFirstName = () => {
         setFirstNameError(!firstName.length ? true : false);
@@ -90,6 +91,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const [lastNameError, setLastNameError] = useState(false);
     const handleChangeLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLastName(e.target.value);
+        handleBlurLastName();
     };
     const handleBlurLastName = () => {
         setLastNameError(!lastName.length ? true : false);
@@ -99,13 +101,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const [emailError, setEmailError] = useState(false);
     const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
+        handleBlurEmail();
     };
     const handleBlurEmail = () => {
-        if (!validateEmail(email)) {
-            setEmailError(true);
-        } else {
-            setEmailError(false);
-        }
+        setEmailError(!validateEmail(email));
     };
 
     const [password, setPassword] = useState('');
@@ -113,13 +112,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const [passwordError, setPasswordError] = useState(false);
     const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
+        handleBlurPassword()
     };
     const handleBlurPassword = () => {
-        if (!validatePassword(password)) {
-            setPasswordError(true);
-        } else {
-            setPasswordError(false);
-        }
+        setPasswordError ( !validatePassword(password) && (!reenterPassword.length || !reenterPasswordError) );
     };
 
     const [reenterPassword, setReenterPassword] = useState('');
@@ -143,16 +139,19 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         return emailRegex.test(email);
     };
 
+    const checkPasswordsMatch = () => {
+        setReenterPasswordError(password !== reenterPassword);
+        return !reenterPasswordError;
+    };
+
     const validatePassword = (password: string) => {
-        return passwordRegex.test(
-            password
-        );
+        return ( passwordRegex.test(password) );
     };
 
     const validateForm = () => {
         if (!email || !validateEmail(email)) return false;
         if (!password || !validatePassword(password)) return false;
-        if (password !== reenterPassword) return false;
+        if ( !checkPasswordsMatch() ) return false;
         if (!firstName || !lastName) return false;
         return true;
     };
@@ -167,8 +166,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                     'password': password
                 }
             );
-            console.log('User registered successfully:', response.data);
-            return response.status === 200;
+            if (response.status === 201) {
+                console.log('User registered successfully:', response.data);
+                return true;
+            }
         } catch (error) {
             console.error('Error registering user:', error);
             return false;
@@ -176,9 +177,15 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     };
 
     const onRegisterClick = () => {
-        if (validateForm())
+        if (validateForm()) {
             attemptSignUp()
-                .then(navigateToSignIn)
+                .then((isSuccess: boolean) => {
+                    if (isSuccess) {
+                        console.log("Success");
+                        navigateToSignIn();
+                    }
+                });
+        }
     };
 
     const navigateToSignIn = useLoginNavigation();

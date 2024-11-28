@@ -133,8 +133,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                     'password': password.value
                 }
             );
-            sessionStorage.setItem('token', response.data.token);
-            return response.status === 200;
+            if (response.status === 200) {
+                sessionStorage.setItem('token', response.data.token);
+                return true;
+            }
+
         } catch (error) {
             console.error('Error validating user:', error);
             if (error.response && error.response.status === 401) setSignInError('Invalid email or password.');
