@@ -21,6 +21,14 @@ export const useSignUpNavigation = (): (() => void) => {
     };
 };
 
+export const useTicketPageNavigation = (): (() => void) => {
+    const navigate: NavigateFunction = useNavigate();
+
+    return () => {
+        navigate('/tickets');
+    };
+};
+
 /** Same as the sign up navigation function but navigates to the login page */
 export const useLoginNavigation = (): (() => void) => {
     const navigate: NavigateFunction = useNavigate();

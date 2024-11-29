@@ -1,11 +1,13 @@
-import { Card as MuiCard, Button, Typography, Divider } from '@mui/material';
+{/*  TODO: Fetch ticket ID from backend and add TicketID to here */}
+
+import { Card as MuiCard, Button, Typography, Divider, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../../assets/template-themes/AppTheme';
 
+/* The issueList is a simple array of strings that will be turned into a bullet list
+      This data structure may have to be changed depending on how the data is handled on the backend*/
 interface TicketProps {
   ticketName: string;
-  {/* This is an array of strings holding the issues to be turned into a list
-      This data structure may have to be changed depending on how the data is handled on the backend*/}
   issueList: string[];
   issueDetails: string;
 }
@@ -46,59 +48,98 @@ export default function TicketCard({
           padding: 2,
           maxWidth: '20vw',
           width: '100%',
-          height: '50vh'
+          height: '75vh',
           boxShadow: 3,
           textAlign: 'center',
           justifyContent: 'center',
+          display: 'flex', //allow the card to flex
+          flexDirection: 'column', //items stacked vertically
         }}
       >
-        {/* Display ticket name */}
+        {/* Display ticket name
+            I can't get longer names like the third test ticket to properly shrink  -- Aaron*/}
+
+
         <Typography
           component="h1"
           variant="h4"
           sx={{
-            width: '100%',
-            fontSize: 'clamp(2rem, 10vw, 2.15rem)',
+            maxWidth: '100%',
+            fontSize: 'clamp(1rem, 8vw, 2rem)',
             textAlign: 'center',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'clip',
           }}
         >
           {ticketName}
         </Typography>
 
+        {/* TEST CODE -- TRANSFORMATION DIDN'T WORK, NOT SURE HOW TO PROPERLY SCALE THE TEXT -- AARON
+        <Typography
+                  component="h1"
+                  variant="h4"
+                  sx={{
+                    maxWidth: '100%',
+                    fontSize: '2rem',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'clip',
+                    display: 'block',
+                    margin: 0,
+                    padding: 0,
+                    transform: 'scale(1)', //trying to transform the text to fit
+                    transformOrigin: 'center', //define where the scaling occurs from
+                    transition: 'transform 0.2s ease-in-out',
+                    '@media (max-width: 600px)': {
+                        transform: 'scale(0.7)'
+                        },
+                  }}
+                >
+                  {ticketName}
+                </Typography>
+                */}
+
             {/* This adds a horizontal line on the component to divide the sections -- Aaron */}
             <Divider />
-
-        {/* Display ticket issues as a list */}
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{
-            width: '100%',
-            fontSize: 'clamp(1rem, 4vw, 1rem)',
-            textAlign: 'center',
-          }}
-        >
-          {organizationTitle}
-        </Typography>
-
-        {/* Button to navigate to the organization's site */}
-        <Button
-          fullWidth
-          variant="contained"
-          onClick={goToOrgSite}
-          sx={{ justifyContent: 'center', alignItems: 'center' }}
-        >
-          Go To{' '}
-          <span
+        {/* Display ticket issues as a list -- this is now a div to allow it to grow to the divider*/}
+        <div
             style={{
-              fontWeight: 'bold',
-              fontSize: '15px',
-              marginLeft: '6px',
-            }}
-          >
-            {organizationName}
-          </span>
-        </Button>
+                overflowY: 'auto', //this allows the list to scroll if it overflows -- do we want this?
+                }}
+        >
+              <ul style ={{listStyleType: 'disc', paddingLeft: '10px', textAlign: 'left'}}>
+              {/* Map the array to the list */}
+                {issueList.map((issue, index) => (
+                    <li key={index} style={{marginBottom: '5px'}}>
+                        {issue}
+                    </li>
+                    ))}
+              </ul>
+        </div>
+
+
+        {/* Divider for the 3rd section */}
+        <Divider />
+
+
+        {/* the first three attributes here are space separated, as this is how JSX props are passed
+            We're encasing this in a div same as above*/}
+
+
+        <div style={{ flexGrow: 1 }}>
+            <Typography
+                sx={{
+                    marginBottom: 2,
+                    wordWrap: 'break-word',
+                    whiteSpace: 'pre-wrap',
+                    textAlign: 'left',
+                    }}
+            >
+                {issueDetails}
+            </Typography>
+        </div>
       </Card>
     </AppTheme>
   );

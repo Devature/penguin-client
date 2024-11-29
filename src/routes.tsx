@@ -1,4 +1,6 @@
 // routes.tsx
+
+{/* TODO: Add routing for ticketpage */}
 import { createBrowserRouter } from 'react-router-dom';
 import Index from './pages/Index';
 import ApiTest from './pages/ApiTest';
@@ -7,6 +9,7 @@ import SignIn from './pages/SignIn'; //this imports the SignIn function from the
 import Layout from './components/Layout';  // Import the Layout component
 import SignUp from './pages/SignUp';
 import UserOrgs from './pages/UserOrganization';
+import TicketPage from './pages/TicketPage';
 
 //this gets used by app.tsx
 export const router = createBrowserRouter([
@@ -25,6 +28,7 @@ export const router = createBrowserRouter([
             { path: '/signin', element: <SignIn /> },
             { path: '/register', element: <SignUp /> },
             { path: '/userorgs', element: <UserOrgs />},
+            { path: '/tickets', element: <TicketPage />},
         ],
     },
 ]);

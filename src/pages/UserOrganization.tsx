@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import AppTheme from '../assets/template-themes/AppTheme';
 import OrganizationCard from '../components/organizationpage/OrganizationCard';
+import { useTicketPageNavigation } from '../util/hooks/navigationUtilities';
 
 export default function UserOrganization(props: { disableCustomTheme?: boolean }) {
 
@@ -29,8 +30,8 @@ export default function UserOrganization(props: { disableCustomTheme?: boolean }
                 padding:2,
             }}>
                 <OrganizationCard 
-                    organizationName={'Devature'} 
-                    organizationTitle={'Software Developer'} 
+                    organizationName={'Test Org'}
+                    organizationTitle={'Caveman'}
                     organizationURL={'https://www.google.com'} 
                 />
                 <OrganizationCard 

@@ -32,7 +32,7 @@ export default function OrganizationCard({
   organizationTitle,
   organizationURL,
 }: OrgProps) {
-    
+
   const goToOrgSite = () => {
     window.open(organizationURL);
   };
