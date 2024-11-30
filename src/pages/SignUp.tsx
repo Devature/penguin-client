@@ -517,7 +517,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                             <span
                                 onClick={navigateToSignIn}
                                 style={{
-                                    color: 'blue',
+                                    color: '#1868DB',
                                     cursor: 'pointer',
                                     textDecoration: 'underline',
                                 }}
