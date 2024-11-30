@@ -155,8 +155,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         console.log("Success");
                         navigateHome();
                     } else {
-                        console.error("Bad Login credentials");
-                        setPasswordErrorMessage("Invalid sign in credentials. Check email and password and try again.")
+                        console.error("Login unsuccessful");
                     }
                 });
         }

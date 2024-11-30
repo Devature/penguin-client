@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -124,18 +124,15 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
     const [reenterPassword, setReenterPassword] = useState('');
     const [reenterPasswordError, setReenterPasswordError] = useState(false);
+
+    useEffect(() => {
+        setReenterPasswordError(password !== reenterPassword);
+    }, [password, reenterPassword]);
+
     const handleChangeReenterPassword = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
         setReenterPassword(e.target.value);
-        handleBlurReenterPassword();
-    };
-    const handleBlurReenterPassword = () => {
-        if (password !== reenterPassword) {
-            setReenterPasswordError(true);
-        } else {
-            setReenterPasswordError(false);
-        }
     };
 
     const togglePasswordVisibility = () => {
@@ -158,13 +155,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         if (password !== reenterPassword) return false;
         if (!firstName || !lastName) return false;
         return true;
-    };
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        if (!validateForm) return;
-        const data = new FormData(event.currentTarget);
     };
 
 // server site validation for email and password
@@ -225,7 +215,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                     {/* Form div */}
                     <Box
                         component="form"
-                        onSubmit={onRegisterClick}
+                        onSubmit={(e) => e.preventDefault()}
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -425,7 +415,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                                 variant="outlined"
                                 error={reenterPasswordError}
                                 onChange={handleChangeReenterPassword}
-                                onBlur={handleBlurReenterPassword}
                                 helperText={
                                     !reenterPasswordError
                                         ? ''
