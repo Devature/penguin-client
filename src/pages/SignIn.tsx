@@ -21,6 +21,7 @@ import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
 import { penguinApi } from '../util/axios.ts';
 import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
 import { Alert } from '@mui/material';
+import { AxiosError } from 'axios';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -64,8 +65,10 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-{/* This is imported into the router, so it's whats rendered when the signin.tsx page is navigated to */}
+{/* This is imported into the router, so it's what's rendered when the SignIn.tsx page is navigated to */}
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -85,22 +88,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      if (emailError || passwordError) {
-          return;
-      }
-
-      const data = new FormData(event.currentTarget);
-  };
-
 // client side input validation for email and password
-  const validateInputs =
-      (email: HTMLInputElement, password: HTMLInputElement): boolean => {
+  const validateInputs = (): boolean => {
       let isValid = true;
 
-      if (!email.value || !emailRegex.test(email.value)) {
+      if (!email || !emailRegex.test(email)) {
           setEmailError(true);
           setEmailErrorMessage('Please enter a valid email address.');
           isValid = false;
@@ -109,7 +101,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           setEmailErrorMessage('');
       }
 
-      if (!password.value || !passwordRegex.test(password.value)) {
+      if (!password || !passwordRegex.test(password)) {
           setPasswordError(true);
           setPasswordErrorMessage(
               'Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.'
@@ -124,42 +116,36 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
 // server site validation for email and password
-    const attemptSignIn =
-        async (email: HTMLInputElement, password: HTMLInputElement): Promise<boolean> => {
+    const attemptSignIn = async (): Promise<boolean> => {
         try {
             const response = await penguinApi.post('/api/v1/user/login',
                 {
-                    'email': email.value,
-                    'password': password.value
+                    'email': email,
+                    'password': password
                 }
             );
-            if (response.status === 200) {
-                sessionStorage.setItem('token', response.data.token);
-                return true;
-            }
-
+            sessionStorage.setItem('token', response.data.token);
+            return true;
         } catch (error) {
             console.error('Error validating user:', error);
-            if (error.response && error.response.status === 401) setSignInError('Invalid email or password.');
-            else if (error.response && error.response.status === 500) setSignInError('An internal server error occurred. Please try again.');
-            else setSignInError('An unexpected error occurred. Please try again later.')
+            if (error instanceof AxiosError) {
+                if (error.response && error.response.status === 401) setSignInError('Invalid email or password.');
+                else if (error.response && error.response.status === 500) setSignInError('An internal server error occurred. Please try again.');
+                else setSignInError('An unexpected error occurred. Please try again later.');
+            } else setSignInError('An unexpected error occurred. Please try again later.');
             return false;
         }
     };
 
     const onSignInClick = () => {
-        const email = document.getElementById('email') as HTMLInputElement;
-        const password = document.getElementById('password') as HTMLInputElement;
-
-        if (validateInputs(email, password)) {
-            attemptSignIn(email, password)
+        if (validateInputs()) {
+            attemptSignIn()
                 .then((isSuccess: boolean) => {
                     if (isSuccess) {
                         console.log("Success");
                         navigateHome();
                     } else {
-                        console.error("Bad Login credentials");
-                        setPasswordErrorMessage("Invalid sign in credentials. Check email and password and try again.")
+                        console.error("Login unsuccessful");
                     }
                 });
         }
@@ -198,7 +184,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 </Typography>
                 <Box
                     component="form"
-                    onSubmit={handleSubmit}
+                    onSubmit={(e) => e.preventDefault()}
                     noValidate
                     sx={{
                         display: 'flex',
@@ -222,6 +208,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                             fullWidth
                             variant="outlined"
                             color={emailError ? 'error' : 'primary'}
+                            onChange={(e) => setEmail(e.currentTarget.value)}
                         />
                     </FormControl>
                     <FormControl>
@@ -238,6 +225,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                             fullWidth
                             variant="outlined"
                             color={passwordError ? 'error' : 'primary'}
+                            onChange={(e) => setPassword(e.currentTarget.value)}
                     />
                     </FormControl>
                     <FormControlLabel
