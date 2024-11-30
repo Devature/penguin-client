@@ -3,7 +3,7 @@ import * as React from 'react';
     to the container -- this means that the icon scales to the appbar (etc.), instead of being cut off
     Conversion to Typescript was done with SVGR -- the SVG files are still present, if you need to transform the code
     again for some reason, just use SVGR on the SVG files BUT be sure to add the viewbox to ensure the raster scales*/}
-const SvgPenguinIconWhiteWithText = (props) => (
+const SvgPenguinIconWhiteWithText: React.FC = (props) => (
     <svg 
 		xmlns="http://www.w3.org/2000/svg" 
 		width="100%"

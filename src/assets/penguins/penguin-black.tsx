@@ -1,5 +1,5 @@
 import * as React from 'react';
-const SvgPenguinPhotoBlack = (props) => (
+const SvgPenguinPhotoBlack: React.FC = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 489 215" {...props}>
 
         {/* Adding white fill to the logo so it works on the appbar */}

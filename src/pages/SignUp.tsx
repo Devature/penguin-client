@@ -253,6 +253,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                                 </FormLabel>
                                 <TextField
                                     autoComplete="firstName"
+                                    autoFocus
                                     name="firstName"
                                     required
                                     fullWidth
