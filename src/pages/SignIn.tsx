@@ -283,7 +283,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         {/* Use an event handler to call the fetched function to navigate to sign up */}
                         <span
                             onClick={navigateToSignUp}
-                            style={{ color: 'blue', cursor: 'pointer' }}
+                            style={{ color: '#1868DB', cursor: 'pointer', textDecoration: 'underline' }}
                         >
                             Sign up
                         </span>

@@ -15,6 +15,7 @@ import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
 import {useSignUpNavigation, useLoginNavigation} from '../util/hooks/navigationUtilities.ts';
+import {Link} from "react-router-dom";
 
 
 const pages = ['Projects', 'Tickets'];
@@ -44,7 +45,7 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
-    {/* Works the same as the sign up navigation method */}
+    {/* Works the same as the signup navigation method */}
     /** Navigate to login page */
     const navigateToLogin  = useLoginNavigation();
 
@@ -59,27 +60,39 @@ function ResponsiveAppBar() {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {/* Container for desktop logo with text */}
-                    <Box
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            mr: 1,
-                            height: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
+                    <Link
+                        to={'/'}
+                        style={{
+                            textDecoration: 'none',
+                            color: 'inherit',
                         }}
                     >
-                        <PenguinIcon size={69} />
-                        <Typography
-                            variant="h1"
+                        <Box
+
                             sx={{
-                                fontFamily: 'Gabriela',
-                                fontSize: '3rem',
-                                ml: '0.5rem',
+                                display: { xs: 'none', md: 'flex' },
+                                mr: 1,
+                                height: '100%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
                             }}
                         >
-                            Ticket Penguin
-                        </Typography>
-                    </Box>
+
+                            <PenguinIcon size={69} />
+                            <Typography
+                                variant="h1"
+                                sx={{
+                                    fontFamily: 'Gabriela',
+                                    fontSize: '3rem',
+                                    ml: '0.5rem',
+                                }}
+                            >
+                                Ticket Penguin
+                            </Typography>
+                        </Box>
+                    </Link>
+
+                    {/* Mobile menu */}
 
                     <Box
                         sx={{
@@ -98,26 +111,34 @@ function ResponsiveAppBar() {
                             <MenuIcon />
                         </IconButton>
                         {/* Mobile logo & text */}
-                        <Box
-                            sx={{
-                                display: { xs: 'flex', md: 'none' },
-                                mr: 1,
-                                height: '100%',
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                        <Link
+                            to={'/'}
+                            style={{
+                                textDecoration: 'none',
+                                color: 'inherit',
                             }}
                         >
-                            <PenguinIcon size={50} />
-                            <Typography
-                                variant="h1"
+                            <Box
                                 sx={{
-                                    fontFamily: 'Gabriola',
-                                    fontSize: '2.4rem',
+                                    display: { xs: 'flex', md: 'none' },
+                                    mr: 1,
+                                    height: '100%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                 }}
                             >
-                                Ticket Penguin
-                            </Typography>
-                        </Box>
+                                <PenguinIcon size={50} />
+                                <Typography
+                                    variant="h1"
+                                    sx={{
+                                        fontFamily: 'Gabriola',
+                                        fontSize: '2.4rem',
+                                    }}
+                                >
+                                    Ticket Penguin
+                                </Typography>
+                            </Box>
+                        </Link>
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
@@ -241,10 +262,10 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {/* Handlers are hooked into navigation functions from ../util/navigationUtilities.ts --Aaron*/}
-                            <Button onClick={navigateToLogin}>Login</Button>
+                            <Button onClick={navigateToLogin}>Sign in</Button>
 
                             <Button onClick={navigateToSignUp}>
-                                Register
+                                Get Started
                             </Button>
                         </Stack>
                     )}
