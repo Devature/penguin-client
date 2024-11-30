@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import '@fontsource/gabriela/400.css';
 
 export const theme = createTheme({
     palette: {

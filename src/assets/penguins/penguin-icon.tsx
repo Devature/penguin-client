@@ -1,13 +1,19 @@
-// TODO: Not resizing properly
+declare global {
+    interface SVGCustomIconProps {
+        size: number;
+    }
+}
+
 export default function PenguinIcon(
-    { size }: { size?: number } = { size: 24 }
+    /* Using a single size prop instead of height/width because aspect ratio shouldn't change */
+    { size }: SVGCustomIconProps
 ) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width={size}
             height={size}
-            viewBox={`0 0 ${size} ${size}`}
+            viewBox={`0 0 270 270`}
         >
             <path
                 fill="#010101"
