@@ -7,19 +7,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useColorScheme } from '@mui/material/styles';
 
-// Extend the Theme interface to include vars
-// This serves no functional purpose and is only here to satisfy errors thrown while building
-declare module '@mui/material/styles' {
-  interface Theme {
-    vars?: any;
-  }
-  interface ThemeOptions {
-    vars?: any;
-  }
-}
-
-
-
 export default function ColorModeIconDropdown(props: IconButtonOwnProps) {
   const { mode, systemMode, setMode } = useColorScheme();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
