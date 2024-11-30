@@ -262,10 +262,10 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {/* Handlers are hooked into navigation functions from ../util/navigationUtilities.ts --Aaron*/}
-                            <Button onClick={navigateToLogin}>Login</Button>
+                            <Button onClick={navigateToLogin}>Sign in</Button>
 
                             <Button onClick={navigateToSignUp}>
-                                Register
+                                Get Started
                             </Button>
                         </Stack>
                     )}
