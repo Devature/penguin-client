@@ -301,7 +301,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                                 required
                                 fullWidth
                                 id="email"
-                                placeholder="johndoe@gmail.com"
+                                placeholder="name@company.com"
                                 value={email}
                                 name="email"
                                 autoComplete="email"
