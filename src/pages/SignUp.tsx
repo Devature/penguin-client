@@ -11,7 +11,7 @@ import {
     Card as MuiCard,
     Tooltip,
     InputAdornment,
-    IconButton,
+    IconButton, Alert,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../assets/template-themes/AppTheme';
@@ -24,6 +24,7 @@ import { GoogleIcon } from '../components/icons/GoogleIcon.tsx';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
 import { penguinApi } from '../util/axios.ts';
 import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
+import { AxiosError } from 'axios';
 
 {
     /* Styling for parent card */
@@ -141,17 +142,14 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         setReenterPassword(e.target.value);
     };
 
+    const [registrationError, setRegistrationError] = useState('');
+
     const togglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
     };
 
     const validateEmail = (email: string) => {
         return emailRegex.test(email);
-    };
-
-    const checkPasswordsMatch = () => {
-        setReenterPasswordError(password !== reenterPassword);
-        return !reenterPasswordError;
     };
 
     const validatePassword = (password: string) => {
@@ -161,7 +159,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const validateForm = () => {
         if (!email || !validateEmail(email)) return false;
         if (!password || !validatePassword(password)) return false;
-        if ( !checkPasswordsMatch() ) return false;
+        if (password !== reenterPassword) return false;
         if (!firstName || !lastName) return false;
         return true;
     };
@@ -176,12 +174,15 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                     'password': password
                 }
             );
-            if (response.status === 201) {
-                console.log('User registered successfully:', response.data);
-                return true;
-            }
+            console.log('User registered successfully:', response.data);
+            return true;
         } catch (error) {
             console.error('Error registering user:', error);
+            if (error instanceof AxiosError) {
+                if (error.response && error.response.status === 409) setRegistrationError('A user already exists with this email address.');
+                else if (error.response && error.response.status === 500) setRegistrationError('An internal server error occurred. Please try again.');
+                else setRegistrationError('An unexpected error occurred. Please try again later.');
+            } else setRegistrationError('An unexpected error occurred. Please try again later.');
             return false;
         }
     };
@@ -430,10 +431,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                                 variant="outlined"
                                 error={reenterPasswordError}
                                 onChange={handleChangeReenterPassword}
-                                helperText={
-                                    !reenterPasswordError
-                                        ? ''
-                                        : 'Passwords must match'
+                                helperText={reenterPassword && reenterPasswordError
+                                    ? 'Passwords must match'
+                                    : ''
                                 }
                                 InputProps={{
                                     endAdornment: (
@@ -466,6 +466,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
                             {/* Submit user information */}
                         </FormControl>
+                        {registrationError && <Alert severity='error'>{registrationError}</Alert>}
                         <Button
                             type="submit"
                             fullWidth
