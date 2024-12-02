@@ -75,6 +75,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [signInError, setSignInError] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const [rememberMe, setRememberMe] = React.useState(false);
 
 
   // Call useSignUpNavigation inside the component to follow hook rules
@@ -87,6 +88,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRememberMe(e.target.checked);
+  }
 
 // client side input validation for email and password
   const validateInputs = (): boolean => {
@@ -143,6 +148,14 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 .then((isSuccess: boolean) => {
                     if (isSuccess) {
                         console.log("Success");
+                        if (rememberMe) {
+                            console.log("Cookie created")
+                            createCookie(email);
+                        }
+                        else {
+                            console.log("Deleted cookie if it exists");
+                            deleteCookie();
+                        }
                         navigateHome();
                     } else {
                         console.error("Login unsuccessful");
@@ -150,6 +163,36 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 });
         }
     };
+
+    const createCookie = (email: string) : void => {
+        const date = new Date();
+        date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
+        const expires = `expires=${date.toUTCString()}`;
+        document.cookie = `rememberEmail=${email}; ${expires}; path=/`;
+    }
+
+    const deleteCookie = (): void => {
+        document.cookie = "rememberEmail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
+    const findCookie = (): string | null => {
+        const cookies = document.cookie.split('; ');
+        for (const cookie of cookies) {
+            const [name, value] = cookie.split('=');
+            if (name === 'rememberEmail') {
+                return decodeURIComponent(value);
+            }
+        }
+        return null;
+    }
+
+    React.useEffect(() => {
+        const savedEmail = findCookie();
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberMe(true);
+        }
+    }, []);
 
 
     const navigateHome = useDashboardNavigation();
@@ -230,7 +273,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                     </FormControl>
                     <FormControlLabel
                         control={
-                            <Checkbox value="remember" color="primary" />
+                            <Checkbox value="remember" color="primary" checked={rememberMe} onChange={handleRememberMeChange}/>
                         }
                         label="Remember me"
                     />
