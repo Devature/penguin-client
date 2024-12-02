@@ -169,6 +169,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
         const expires = `expires=${date.toUTCString()}`;
         document.cookie = `rememberEmail=${email}; ${expires}; path=/`;
+        console.log(`Cookie Name: ${email}, Expiration Date: ${expires}`);
     }
 
     const deleteCookie = (): void => {
@@ -178,9 +179,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     const findCookie = (): string | null => {
         const cookies = document.cookie.split('; ');
         for (const cookie of cookies) {
-            const [name, value] = cookie.split('=');
+            const [name, email] = cookie.split('=');
             if (name === 'rememberEmail') {
-                return decodeURIComponent(value);
+                return decodeURIComponent(email);
             }
         }
         return null;
@@ -189,6 +190,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     React.useEffect(() => {
         const savedEmail = findCookie();
         if (savedEmail) {
+            console.log("Cookies found");
             setEmail(savedEmail);
             setRememberMe(true);
         }
@@ -252,6 +254,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                             variant="outlined"
                             color={emailError ? 'error' : 'primary'}
                             onChange={(e) => setEmail(e.currentTarget.value)}
+                            value={email}
                         />
                     </FormControl>
                     <FormControl>
