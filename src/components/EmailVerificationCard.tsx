@@ -5,7 +5,8 @@
     As well, the {onResendEmail}: EmailVerificationCardProps is taking the prop passed in and saving it to the
     onResendEmail variable
 
-    The divider is currently spanning the whole card; this can be changed by removing the calc and the negative left margin
+    The divider is currently not spanning the whole card; I think it looks more professional this way
+    It can be made to span the whole card by changing the sx on the divider to have width: 'calc(100% + 32px)', marginLeft: -2
      -- Aaron */}
 
 import React from 'react';
@@ -26,7 +27,7 @@ const EmailVerificationCard = ({ onResendEmail }: EmailVerificationCardProps) =>
                 <Typography variant="h4" align="center" color="black">
                     Please Verify Your Email
                 </Typography>
-                <Divider sx={{ borderWidth: 1, marginBottom: 2, width: 'calc(100% + 32px)', marginLeft: -2}} color="grey"/>
+                <Divider sx={{ borderWidth: 1, marginBottom: 2, width: '100%', marginLeft: 0}} color="grey"/>
                 <Typography variant="body1" align="center" color="black">
                     A verification link has been sent to your email. If you have not received the email, please press the resend button below.
                 </Typography>
