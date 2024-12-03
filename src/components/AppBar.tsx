@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Stack } from '@mui/material';
 import { useAuth } from '../util/auth/useAuth';
 import PenguinIcon from '../assets/penguins/penguin-icon.tsx';
-import {useSignUpNavigation, useLoginNavigation} from '../util/hooks/navigationUtilities.ts';
+import {useSignUpNavigation, useLoginNavigation, useVerifyNavigation} from '../util/hooks/navigationUtilities.ts';
 import {Link} from "react-router-dom";
 
 
@@ -48,6 +48,8 @@ function ResponsiveAppBar() {
     {/* Works the same as the signup navigation method */}
     /** Navigate to login page */
     const navigateToLogin  = useLoginNavigation();
+
+    const navigateToVerify = useVerifyNavigation();
 
 
     {/* We're grabbing the function for navigating to the signup page by calling the hook
@@ -267,6 +269,7 @@ function ResponsiveAppBar() {
                             <Button onClick={navigateToSignUp}>
                                 Get Started
                             </Button>
+
                         </Stack>
                     )}
                 </Toolbar>

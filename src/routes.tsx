@@ -6,6 +6,7 @@ import WorkIndex from './pages/WorkIndex';
 import SignIn from './pages/SignIn'; //this imports the SignIn function from the SignIn.tsx file -- Aaron
 import Layout from './components/Layout';  // Import the Layout component
 import SignUp from './pages/SignUp';
+import EmailVerificationPage from './pages/EmailVerificationPage';
 
 //this gets used by app.tsx
 export const router = createBrowserRouter([
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
             { path: '/works', element: <WorkIndex /> },
             { path: '/signin', element: <SignIn /> },
             { path: '/register', element: <SignUp /> },
+            { path: '/verify', element: <EmailVerificationPage />}
         ],
     },
 ]);
