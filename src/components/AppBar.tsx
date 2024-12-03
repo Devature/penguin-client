@@ -270,9 +270,6 @@ function ResponsiveAppBar() {
                                 Get Started
                             </Button>
 
-                            <Button onClick={navigateToVerify}>
-                                Verify Email Test
-                            </Button>
                         </Stack>
                     )}
                 </Toolbar>
