@@ -22,6 +22,7 @@ import { penguinApi } from '../util/axios.ts';
 import { emailRegex, passwordRegex } from '../util/validationRegex.ts';
 import { Alert } from '@mui/material';
 import { AxiosError } from 'axios';
+import { useAuth } from '../util/auth/useAuth.ts';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -76,6 +77,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [signInError, setSignInError] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const [rememberMe, setRememberMe] = React.useState(false);
+  const { setIsAuthenticated } = useAuth();
 
 
   // Call useSignUpNavigation inside the component to follow hook rules
@@ -148,6 +150,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 .then((isSuccess: boolean) => {
                     if (isSuccess) {
                         console.log("Success");
+                        setIsAuthenticated(true);
                         if (rememberMe) {
                             console.log("Cookie created")
                             createCookie(email);
@@ -159,6 +162,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         navigateHome();
                     } else {
                         console.error("Login unsuccessful");
+                        setIsAuthenticated(false);
                     }
                 });
         }
